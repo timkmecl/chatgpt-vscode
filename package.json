@@ -162,7 +162,7 @@
         },
         "chatgpt.promptPrefix.refactor": {
           "type": "string",
-          "default": "Refactor this code and explain what's changed: ",
+          "default": "Refactor this code, then show what's changed in vimdiff format and explain what's changed: ",
           "description": "The prompt prefix used for refactoring the selected code",
           "order": 4
         },
