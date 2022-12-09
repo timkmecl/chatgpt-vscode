@@ -2,7 +2,7 @@
   "name": "chatgpt",
   "displayName": "ChatGPT: write and improve code using AI",
   "description": "Extension that allows you to use OpeanAI's ChatGPT inside the IDE (unofficial)",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "publisher": "timkmecl",
   "icon": "resources/extensionIcon.png",
   "license": "MIT",
@@ -207,7 +207,8 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "update-package-lock": "npm install --package-lock-only"
   },
   "devDependencies": {
     "@types/glob": "^8.0.0",
