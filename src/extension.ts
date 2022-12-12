@@ -316,13 +316,18 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 				<script src="${microlightUri}"></script>
 				<style>
 				.code {
-					white-space : pre;
+					white-space: pre;
+				}
+				.p {
+					padding-top: 0.25rem;
+					padding-bottom: 0.25rem;
+				}
 				</style>
 			</head>
 			<body>
-				<input class="h-10 w-full text-white bg-stone-700 p-4 text-sm" type="text" placeholder="Ask ChatGPT something" id="prompt-input" />
+				<textare class="h-10 w-full text-white bg-stone-700 p-4 text-sm" placeholder="Ask ChatGPT something" id="prompt-input" />
 
-				<div id="response" class="pt-6 text-sm">
+				<div id="response" class="pt-4 text-sm">
 				</div>
 
 				<script src="${scriptUri}"></script>

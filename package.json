@@ -1,8 +1,8 @@
 {
   "name": "chatgpt",
   "displayName": "ChatGPT: write and improve code using AI",
-  "description": "Extension that allows you to use OpeanAI's ChatGPT inside the IDE (unofficial)",
-  "version": "0.4.1",
+  "description": "Use ChatGPT right inside the IDE to enhance and automate your coding with AI-powered assistance (unofficial)",
+  "version": "0.4.1.1",
   "publisher": "timkmecl",
   "icon": "resources/extensionIcon.png",
   "license": "MIT",
@@ -16,9 +16,10 @@
     "Other"
   ],
   "keywords": [
-    "copilot",
-    "openai",
     "chatgpt",
+    "openai",
+    "gpt3",
+    "copilot",
     "ai",
     "explain",
     "find bugs",

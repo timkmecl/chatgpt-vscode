@@ -1,7 +1,8 @@
-# ChatGPT Extension for VSCode
+# ChatGPT extension for VSCode
 
 This Visual Studio Code extension allows you to use the [unofficial ChatGPT API](https://github.com/transitive-bullshit/chatgpt-api) to generate natural language responses from OpenAI's [ChatGPT](https://chat.openai.com/chat) to your questions, right within the editor.
 
+🤖✨ Supercharge your coding with AI-powered assistance. Automatically write new code from scratch, ask questions, get explanations, refactor code, find bugs and more!
 
 ### [Marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt), [Github](https://github.com/timkmecl/chatgpt-vscode)
 
@@ -45,15 +46,15 @@ To use the extension, open a text editor in Visual Studio Code and open the Chat
 
 <img src="examples/create.png" alt="Writing new code using chatGPT" width="500"/>
 
-You can also select a code snippet in the editor and then enter a prompt in the side panel, or right-click and select "Ask ChatGPT". The selected code will be automatically appended to your query when it is sent to the AI. This can be useful for generating code snippets or getting explanations for specific pieces of code.
+You can also select a code snippet in the editor and then enter a prompt in the side panel, or right-click and select "Ask ChatGPT". The **selected code will be automatically appended** to your query when it is sent to the AI. This can be useful for generating code snippets or getting explanations for specific pieces of code.
 
 <img src="examples/explain.png" alt="Refactoring selected code using chatGPT"/>
 
-To insert a code snippet from the AI's response into the editor, simply click on the code block in the panel. The code will be automatically inserted at the cursor position in the active editor.
+To **insert a code snippet** from the AI's response into the editor, simply click on the code block in the panel. The code will be automatically inserted at the cursor position in the active editor.
 
 <img src="examples/refactor.png" alt="chatGPT explaining selected code"/>
 
-You can select some code in the editor, right click on it and choose one of the following from the context menu:
+You can select some code in the editor, right click on it and choose one of the following **shortcuts** from the context menu:
 #### Commands:
 - `Ask ChatGPT`: will provide a prompt for you to enter any query
 - `ChatGPT: Explain selection`: will explain what the selected code does
@@ -61,7 +62,7 @@ You can select some code in the editor, right click on it and choose one of the 
 - `ChatGPT: Find problems`: looks for problems/errors in the selected code, fixes and explains them
 - `ChatGPT: Optimize selection`: tries to optimize the selected code
 
-`Ask ChatGPT` is also available when nothing is selected. For the other four commands, you can customize the exact prompt that will be sent to the AI by editing the extension settings in VSCode Preferences.
+`Ask ChatGPT` is also available when nothing is selected. For the other four commands, you can **customize the exact prompt** that will be sent to the AI by editing the extension settings in VSCode Preferences.
 
 
 Because ChatGPT is a conversational AI, you can ask follow-up questions to the response. The conversation context is maintained between queries, so you can ask multiple questions in a row. 
