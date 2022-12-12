@@ -4,6 +4,8 @@ This Visual Studio Code extension allows you to use the [unofficial ChatGPT API]
 
 🤖✨ Supercharge your coding with AI-powered assistance. Automatically write new code from scratch, ask questions, get explanations, refactor code, find bugs and more!
 
+### ⚠️⚠️**IMPORTANT!**⚠️⚠️ Due to breaking changes in ChatGPT on Dec 12., update the extension and read the new instructions on [obtaining the tokens](#obtaining-the-three-tokens)!
+
 ### [Marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt), [Github](https://github.com/timkmecl/chatgpt-vscode)
 
 <br>
@@ -22,22 +24,32 @@ This Visual Studio Code extension allows you to use the [unofficial ChatGPT API]
 
 To use this extension, install it from the VSCode marketplace or download and install `.vsix` file from Releases.
 
-1. After the installation is complete, you will need to add your ChatGPT session token to the extension settings in VSCode. To do this, open the `Settings` panel by going to the `Code` menu and selecting `Preferences`, then `Settings`.
+1. After the installation is complete, you will need to add your ChatGPT tokens to the extension settings in VSCode. To do this, open the `Settings` panel by going to the `Code` menu and selecting `Preferences`, then `Settings`.
 2. In the search bar, type `ChatGPT` to filter the settings list.
-3. In the ChatGPT section, enter your session token in the `SESSION_TOKEN` field.
+3. In the ChatGPT section, enter your session tokens in the top three field
 
 After completing these steps, the extension should be ready to use. 
 
-### Obtaining the session token
+There were som
 
-To use this extension, you will need to authenticate with a valid session token from ChatGPT. To get a session token:
+### Obtaining the three tokens
+
+To use this extension, you will need to authenticate with valid token sfrom ChatGPT. To get a session token:
 
 1. Go to https://chat.openai.com/chat and log in or sign up.
 2. Open the developer tools in your browser.
 3. Go to the `Application` tab and open the `Cookies` section.
-4. Copy the value for `__Secure-next-auth.session-token` and save it.
+4. Copy the value for `__Secure-next-auth.session-token` and paste it into the `Session Token` field in the extension settings, and the value for `cf_clearance` into the `Clearance Token` field.
+6. Go to the `Network` tab and select any request.
+7. Copy the value for `user-agent` from the `Request Headers` and paste it into the `User Agent` field in the extension settings.
 
-Once you have obtained a session token, you can configure the extension to use it as described in the previous section.
+#### Update December 12, 2022
+
+Yesterday, OpenAI added additional Cloudflare protections that make it more difficult to access the unofficial API. That's why you now need to set three different parameters instead of just the `Session Token`. There are also several **limitations** now (copied from [chatgpt-api](https://github.com/transitive-bullshit/chatgpt-api)):
+- Cloudflare `cf_clearance` **tokens expire after 2 hours**, so right now we recommend that you refresh your `cf_clearance` token every ~45 minutes or so.
+- Your `user-agent` and `IP address` **must match** from the real browser window you're logged in with to the one you're using for `ChatGPTAPI`.
+- You must use `node >= 18`.
+- You should not be using this account while the bot is using it, because that browser window may refresh one of your tokens and invalidate the bot's session.
 
 
 ## Using the Extension
