@@ -4,9 +4,11 @@ This Visual Studio Code extension allows you to use the [unofficial ChatGPT API]
 
 🤖✨ Supercharge your coding with AI-powered assistance. Automatically write new code from scratch, ask questions, get explanations, refactor code, find bugs and more!
 
-### ⚠️⚠️**IMPORTANT!**⚠️⚠️ Due to breaking changes in ChatGPT on Dec 12., update the extension and read the new instructions on [obtaining the tokens](#obtaining-the-three-tokens)!
-
 ### [Marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt), [Github](https://github.com/timkmecl/chatgpt-vscode)
+
+<br>
+
+### ⚠️⚠️**IMPORTANT!**⚠️⚠️ Due to breaking changes in ChatGPT on Dec 12., update the extension and read the new instructions on [obtaining the tokens](#obtaining-the-three-tokens)!
 
 <br>
 
