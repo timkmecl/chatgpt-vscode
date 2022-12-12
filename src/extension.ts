@@ -122,6 +122,8 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 	public keepConversation = true;
 	public timeoutLength = 60;
 	private _sessionToken?: string;
+	//private clearanceToken?: string;
+        //private userAgent?: string;
 
 	// In the constructor, we store the URI of the extension
 	constructor(private readonly _extensionUri: vscode.Uri) {
