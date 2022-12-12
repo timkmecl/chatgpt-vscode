@@ -2,6 +2,9 @@ import * as vscode from 'vscode';
 import { ChatGPTAPI, ChatGPTConversation } from 'chatgpt';
 
 
+type AuthInfo = {sessionToken?: string, clearanceToken?: string, userAgent?: string};
+
+
 export function activate(context: vscode.ExtensionContext) {
 	// Get the API session token from the extension's configuration
 	const config = vscode.workspace.getConfiguration('chatgpt');
@@ -9,9 +12,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Create a new ChatGPTViewProvider instance and register it with the extension's context
 	const provider = new ChatGPTViewProvider(context.extensionUri);
-	provider.setSessionToken(sessionToken);
 
 	// Put configuration settings into the provider
+	provider.setAuthenticationInfo({sessionToken: config.get('sessionToken'), clearanceToken: config.get('clearanceToken'), userAgent: config.get('userAgent')});
 	provider.selectedInsideCodeblock = config.get('selectedInsideCodeblock') || false;
 	provider.pasteOnClick = config.get('pasteOnClick') || false;
 	provider.keepConversation = config.get('keepConversation') || false;
@@ -75,12 +78,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Change the extension's session token when configuration is changed
 	vscode.workspace.onDidChangeConfiguration((event: vscode.ConfigurationChangeEvent) => {
-		if (event.affectsConfiguration('chatgpt.sessionToken')) {
+		if (event.affectsConfiguration('chatgpt.sessionToken') || event.affectsConfiguration('chatgpt.clearanceToken') || event.affectsConfiguration('chatgpt.userAgent')) {
 			// Get the extension's configuration
 			const config = vscode.workspace.getConfiguration('chatgpt');
-			const sessionToken = config.get('sessionToken') as string|undefined;
 			// add the new token to the provider
-			provider.setSessionToken(sessionToken);
+			provider.setAuthenticationInfo({sessionToken: config.get('sessionToken'), clearanceToken: config.get('clearanceToken'), userAgent: config.get('userAgent')});
 
 		} else if (event.affectsConfiguration('chatgpt.selectedInsideCodeblock')) {
 			const config = vscode.workspace.getConfiguration('chatgpt');
@@ -121,7 +123,7 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 	public pasteOnClick = true;
 	public keepConversation = true;
 	public timeoutLength = 60;
-	private _sessionToken?: string;
+	private _authInfo?: AuthInfo;
 
 	// In the constructor, we store the URI of the extension
 	constructor(private readonly _extensionUri: vscode.Uri) {
@@ -129,8 +131,8 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 	}
 	
 	// Set the session token and create a new API instance based on this token
-	public setSessionToken(sessionToken?: string) {
-		this._sessionToken = sessionToken;
+	public setAuthenticationInfo(authInfo: AuthInfo) {
+		this._authInfo = authInfo;
 		this._newAPI();
 	}
 
@@ -151,11 +153,13 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 
 	// This private method initializes a new ChatGPTAPI instance, using the session token if it is set
 	private _newAPI() {
-		if (!this._sessionToken) {
-			console.warn("Session token not set");
+		if (!this._authInfo || !this._authInfo?.sessionToken || !this._authInfo?.clearanceToken || !this._authInfo?.userAgent) {
+			console.warn("Session token or Clearance token not set, please go to extension settings (read README.md for more info)");
 		}else{
 			this._chatGPTAPI = new ChatGPTAPI({
-				sessionToken: this._sessionToken
+				sessionToken: this._authInfo.sessionToken,
+				clearanceToken: this._authInfo.clearanceToken,
+				userAgent: this._authInfo.userAgent
 			});
 			this._conversation = this._chatGPTAPI.getConversation();
 		}
@@ -245,7 +249,7 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 		let currentMessageNumber = this._currentMessageNumber;
 
 		if (!this._chatGPTAPI || !this._conversation) {
-			response = '[ERROR] Please enter an API key in the extension settings';
+			response = '[ERROR] "Session Token, Clearance Token or User Agent not set, please go to extension settings to set them (read README.md for more info)"';
 		} else {
 			// If successfully signed in
 			console.log("sendMessage");
@@ -318,14 +322,14 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 				.code {
 					white-space: pre;
 				}
-				.p {
+				p {
 					padding-top: 0.25rem;
 					padding-bottom: 0.25rem;
 				}
 				</style>
 			</head>
 			<body>
-				<textare class="h-10 w-full text-white bg-stone-700 p-4 text-sm" placeholder="Ask ChatGPT something" id="prompt-input" />
+				<input class="h-10 w-full text-white bg-stone-700 p-4 text-sm" placeholder="Ask ChatGPT something" id="prompt-input" />
 
 				<div id="response" class="pt-4 text-sm">
 				</div>

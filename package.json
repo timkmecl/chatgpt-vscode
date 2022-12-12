@@ -2,7 +2,7 @@
   "name": "chatgpt",
   "displayName": "ChatGPT: write and improve code using AI",
   "description": "Use ChatGPT right inside the IDE to enhance and automate your coding with AI-powered assistance (unofficial)",
-  "version": "0.4.1.1",
+  "version": "0.5.0",
   "publisher": "timkmecl",
   "icon": "resources/extensionIcon.png",
   "license": "MIT",
@@ -146,7 +146,17 @@
       "properties": {
         "chatgpt.sessionToken": {
           "type": "string",
-          "description": "A session token you get when logged into chat.openai.com",
+          "description": "A session token (`__Secure-next-auth.session-token`) you get when logged into chat.openai.com",
+          "order": 0
+        },
+        "chatgpt.clearanceToken": {
+          "type": "string",
+          "description": "A clearance token (`cf_clearance`) you get when logged into chat.openai.com",
+          "order": 1
+        },
+        "chatgpt.userAgent": {
+          "type": "string",
+          "description": "Your browser's `user-agent` header from any request when logged into chat.openai.com",
           "order": 1
         },
         "chatgpt.pasteOnClick": {
@@ -228,6 +238,6 @@
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
-    "chatgpt": "^2.0.5"
+    "chatgpt": "^2.1.1"
   }
 }
