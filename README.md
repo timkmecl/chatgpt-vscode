@@ -42,16 +42,17 @@ To use this extension, you will need to authenticate with valid token sfrom Chat
 2. Open the developer tools in your browser.
 3. Go to the `Application` tab and open the `Cookies` section.
 4. Copy the value for `__Secure-next-auth.session-token` and paste it into the `Session Token` field in the extension settings, and the value for `cf_clearance` into the `Clearance Token` field.
-6. Go to the `Network` tab and select any request.
-7. Copy the value for `user-agent` from the `Request Headers` and paste it into the `User Agent` field in the extension settings.
+5. Go to the `Network` tab and select any request.
+6. Copy the value for `user-agent` from the `Request Headers` and paste it into the `User Agent` field in the extension settings (it should look something like this: *`Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.46`*)
+6. Alternatively, type `navigator.userAgent` in the `Console` tab and copy the result without the quotes.
 
 #### Update December 12, 2022
 
 Yesterday, OpenAI added additional Cloudflare protections that make it more difficult to access the unofficial API. That's why you now need to set three different parameters instead of just the `Session Token`. There are also several **limitations** now (copied from [chatgpt-api](https://github.com/transitive-bullshit/chatgpt-api)):
 - Cloudflare `cf_clearance` **tokens expire after 2 hours**, so right now we recommend that you refresh your `cf_clearance` token every ~45 minutes or so.
 - Your `user-agent` and `IP address` **must match** from the real browser window you're logged in with to the one you're using for `ChatGPTAPI`.
-- You must use `node >= 18`.
-- You should not be using this account while the bot is using it, because that browser window may refresh one of your tokens and invalidate the bot's session.
+- You must use **`node >= 18`**. Type `node -v` in the terminal to check you version.
+- You should **not be using this account while the extension is using it**, because that browser window may refresh one of your tokens and invalidate the extension's session.
 
 
 ## Using the Extension
