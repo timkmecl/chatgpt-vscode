@@ -83,6 +83,13 @@ You can select some code in the editor, right click on it and choose one of the 
 Because ChatGPT is a conversational AI, you can ask follow-up questions to the response. The conversation context is maintained between queries, so you can ask multiple questions in a row. 
 To **reset the conversation context**, click `ctrl+shift+p` and select `ChatGPT: Reset Conversation`.
 
+
+## Common issues
+
+
+- *ERROR 403 forbidden*: Make sure you exactly followed [these instruction on obtaining the tokens](#obtaining-the-three-tokens). If you still get this error, check wheteher your node version is >= 18. Otherwise check [this list](#update-december-12-2022) for other potential issues caused by OpenAI's use of CloudFlare. *Some users still seem to have issues with this even when following the instructions (see [here](https://github.com/mpociot/chatgpt-vscode/issues/15)), so if you have any ideas on how to fix this, please let me know.*
+- *ERROR 429 too many requests*: This can be solved by using `ctrl+shift+p` and selecting `ChatGPT: Reset Conversation` (but it will also delete the current conversation context). It can be caused by sending requests too quickly, but also when the previous request timeouted. If it keeps happening try increasing the timeout in the extension settings. *Also it looks like OpenAI now sends a timeout after about a minute which also causes this when it happens (see [this](https://github.com/transitive-bullshit/chatgpt-api/issues/111)), I am currently trying to find a way to fix this.*
+
 ---
 
 Please note that this extension is currently a proof of concept and may have some limitations or bugs. We welcome feedback and contributions to improve the extension.
