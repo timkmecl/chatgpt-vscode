@@ -2,7 +2,7 @@
   "name": "chatgpt",
   "displayName": "ChatGPT: write and improve code using AI",
   "description": "Use ChatGPT right inside the IDE to enhance and automate your coding with AI-powered assistance (unofficial)",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "publisher": "timkmecl",
   "icon": "resources/extensionIcon.png",
   "license": "MIT",
@@ -196,7 +196,7 @@
           "order": 7
         },"chatgpt.timeoutLength": {
           "type": "number",
-          "default": "60",
+          "default": "120",
           "description": "How long should the request wait for a response before timing out (in seconds)",
           "order": 8
         },
