@@ -39,7 +39,7 @@ There were som
 To use this extension, you will need to authenticate with valid token sfrom ChatGPT. To get a session token:
 
 1. Go to https://chat.openai.com/chat and log in or sign up.
-2. Open the developer tools in your browser.
+2. Open the developer tools in your browser (preferably not Chrome, see below).
 3. Go to the `Application` tab and open the `Cookies` section.
 4. Copy the value for `__Secure-next-auth.session-token` and paste it into the `Session Token` field in the extension settings, and the value for `cf_clearance` into the `Clearance Token` field.
 5. Go to the `Network` tab and select any request.
@@ -53,6 +53,7 @@ Yesterday, OpenAI added additional Cloudflare protections that make it more diff
 - Your `user-agent` and `IP address` **must match** from the real browser window you're logged in with to the one you're using for `ChatGPTAPI`.
 - You must use **`node >= 18`**. Type `node -v` in the terminal to check you version.
 - You should **not be using this account while the extension is using it**, because that browser window may refresh one of your tokens and invalidate the extension's session.
+- There are currently users who have issues even when following all of the above (see this [comment](https://github.com/timkmecl/chatgpt-vscode/issues/4#issuecomment-1350562961)). **If you're using Chrome** to obtain the tokens, try using a different browser (e.g. Brave), as it seems like using Chrome is often the cause of this.
 
 
 ## Using the Extension
@@ -87,7 +88,7 @@ To **reset the conversation context**, click `ctrl+shift+p` and select `ChatGPT:
 ## Common issues
 
 
-- *ERROR 403 forbidden*: Make sure you exactly followed [these instruction on obtaining the tokens](#obtaining-the-three-tokens). If you still get this error, check wheteher your node version is >= 18. Otherwise check [this list](#update-december-12-2022) for other potential issues caused by OpenAI's use of CloudFlare. *Some users still seem to have issues with this even when following the instructions (see [here](https://github.com/mpociot/chatgpt-vscode/issues/15)), so if you have any ideas on how to fix this, please let me know.*
+- *ERROR 403 forbidden*: Make sure you exactly followed [these instruction on obtaining the tokens](#obtaining-the-three-tokens). If you still get this error, check wheteher your node version is >= 18. Otherwise check [this list](#update-december-12-2022) for other potential issues caused by OpenAI's use of CloudFlare. **If you're using Chrome to obtain the tokens, try using a different browser** (e.g. Brave), as it seems like using Chrome is often the cause of the issues. *Some users still seem to have issues with this even when following the instructions (see [here](https://github.com/mpociot/chatgpt-vscode/issues/15) and [here for potential causes](https://github.com/timkmecl/chatgpt-vscode/issues/4#issuecomment-1350562961))*
 - *ERROR 429 too many requests*: This can be solved by using `ctrl+shift+p` and selecting `ChatGPT: Reset Conversation` (but it will also delete the current conversation context). It can be caused by sending requests too quickly, but also when the previous request timeouted. If it keeps happening try increasing the timeout in the extension settings. *Also it looks like OpenAI now sends a timeout after about a minute which also causes this when it happens (see [this](https://github.com/transitive-bullshit/chatgpt-api/issues/111)), I am currently trying to find a way to fix this.*
 
 ---
