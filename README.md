@@ -1,14 +1,20 @@
 # ChatGPT extension for VSCode
 
+[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/timkmecl.chatgpt)](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt)
+[![Visual Studio Marketplace Rating (Stars)](https://img.shields.io/visual-studio-marketplace/stars/timkmecl.chatgpt)](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt)
+[![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/timkmecl.chatgpt)](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt)
+[![Github stars](https://img.shields.io/github/stars/timkmecl/chatgpt-vscode)](https://github.com/timkmecl/chatgpt-vscode)
+
 This Visual Studio Code extension allows you to use the [unofficial ChatGPT API](https://github.com/transitive-bullshit/chatgpt-api) to generate natural language responses from OpenAI's [ChatGPT](https://chat.openai.com/chat) to your questions, right within the editor.
 
 🤖✨ Supercharge your coding with AI-powered assistance. Automatically write new code from scratch, ask questions, get explanations, refactor code, find bugs and more!
 
-### [Marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt), [Github](https://github.com/timkmecl/chatgpt-vscode)
+- **[VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt)**
+- **[Github](https://github.com/timkmecl/chatgpt-vscode)**
 
 <br>
 
-### ⚠️⚠️**IMPORTANT!**⚠️⚠️ Due to breaking changes in ChatGPT on Dec 12., update the extension and read the new instructions on [obtaining the tokens](#obtaining-the-three-tokens)!
+**💥Make sure to follow the installation instructions carefully! Due to changes introduced by OpenAI, this extension may not work for some and only produce 403 errors.💥**
 
 <br>
 
