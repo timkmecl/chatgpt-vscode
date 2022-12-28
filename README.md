@@ -5,27 +5,31 @@
 [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/timkmecl.chatgpt)](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt)
 [![Github stars](https://img.shields.io/github/stars/timkmecl/chatgpt-vscode)](https://github.com/timkmecl/chatgpt-vscode)
 
-This Visual Studio Code extension allows you to use the [unofficial ChatGPT API](https://github.com/transitive-bullshit/chatgpt-api) to generate natural language responses from OpenAI's [ChatGPT](https://chat.openai.com/chat) to your questions, right within the editor.
+This Visual Studio Code extension allows you to use the [unofficial ChatGPT API](https://github.com/transitive-bullshit/chatgpt-api) to generate code or natural language responses from OpenAI's [ChatGPT](https://chat.openai.com/chat) to your questions, right within the editor.
 
-🤖✨ Supercharge your coding with AI-powered assistance. Automatically write new code from scratch, ask questions, get explanations, refactor code, find bugs and more!
+🚀✨ Supercharge your coding with AI-powered assistance. Automatically write new code from scratch, ask questions, get explanations, refactor code, find bugs and more!
+
+### Links:
 
 - **[VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt)**
 - **[Github](https://github.com/timkmecl/chatgpt-vscode)**
 
 <br>
 
-**💥Make sure to follow the installation instructions carefully! Due to changes introduced by OpenAI, this extension may not work for some and only produce 403 errors.💥**
+**💥Make sure to follow the installation instructions carefully! Due to changes introduced by OpenAI, this extension may not work for some and only produce 403 errors - version using official GPT-3 API coming soon💥**
 
 <br>
 
 <img src="examples/main.png" alt="Refactoring selected code using chatGPT"/>
 
 ## Features
-- **Ask general questions** or use code snippets from the editor to query ChatGPT via an input box in the sidebar
-- Right click on a code selection and run one of the context menu **shortcuts**
-- View ChatGPT's responses in a panel next to the editor
-- Ask **follow-up questions** to the response (conversation context is maintained)
-- **Insert code snippets** from the AI's response into the active editor by clicking on them
+- 💡 **Ask general questions** or use code snippets from the editor to query ChatGPT via an input box in the sidebar
+- 🖱️ Right click on a code selection and run one of the context menu **shortcuts**
+- 💻 View ChatGPT's responses in a panel next to the editor
+- 🚀 See the response as it is being generated **in real time**
+- 💬 Ask **follow-up questions** to the response (conversation context is maintained)
+- 📝 **Insert code snippets** from the AI's response into the active editor by clicking on them
+
 
 
 ## Installation
@@ -105,6 +109,6 @@ Please note that this extension is currently a proof of concept and may have som
 ## Credits
 
 - This wouldn't be possible without OpenAI's [ChatGPT](https://chat.openai.com/chat)
-- The extension makes use of [chatgpt-api](https://github.com/transitive-bullshit/chatgpt-api) (by [Travis Fischer](https://github.com/transitive-bullshit)), which uses ChatGPT unofficial API in order to login and communicate with it.
-- It is built on top of [mpociot/chatgpt-vscode](https://github.com/mpociot/chatgpt-vscode), which started this project
-- `v0.3` inspired and based on [barnesoir/chatgpt-vscode-plugin](https://github.com/barnesoir/chatgpt-vscode-plugin) and [gencay/vscode-chatgpt](https://github.com/gencay/vscode-chatgpt)
+- The extension makes use of [chatgpt-api](https://github.com/transitive-bullshit/chatgpt-api) (by [Travis Fischer](https://github.com/transitive-bullshit)), which uses unofficial ChatGPT API in order to login and communicate with it.
+- The project was started by [mpociot](https://github.com/mpociot/)
+- `v0.3` inspired by [barnesoir/chatgpt-vscode-plugin](https://github.com/barnesoir/chatgpt-vscode-plugin) and [gencay/vscode-chatgpt](https://github.com/gencay/vscode-chatgpt)
