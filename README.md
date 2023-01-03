@@ -44,13 +44,11 @@ To use this extension, install it from the VSCode marketplace or download and in
 2. In the search bar, type `ChatGPT` to filter the settings list.
 3. In the ChatGPT section, enter your session tokens in the top three field
 
-After completing these steps, the extension should be ready to use. 
-
-There were som
+After completing these steps, the extension should be ready to use.
 
 ### Obtaining the three tokens
 
-To use this extension, you will need to authenticate with valid token sfrom ChatGPT. To get a session token:
+To use this extension, you will need to authenticate with valid tokens from ChatGPT. To get a session token:
 
 1. Go to https://chat.openai.com/chat and log in or sign up.
 2. Open the developer tools in your browser (preferably not Chrome, see below).
