@@ -70,6 +70,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('chatgpt.refactor', () => commandHandler('promptPrefix.refactor')),
 		vscode.commands.registerCommand('chatgpt.optimize', () => commandHandler('promptPrefix.optimize')),
 		vscode.commands.registerCommand('chatgpt.findProblems', () => commandHandler('promptPrefix.findProblems')),
+		vscode.commands.registerCommand('chatgpt.documentation', () => commandHandler('promptPrefix.documentation')),
 		vscode.commands.registerCommand('chatgpt.resetConversation', provider.resetConversation),
 		vscode.commands.registerCommand('chatgpt.conversationId', setConversationId)
 	);
@@ -334,8 +335,16 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 					white-space: pre;
 				}
 				p {
-					padding-top: 0.25rem;
-					padding-bottom: 0.25rem;
+					padding-top: 0.3rem;
+					padding-bottom: 0.3rem;
+				}
+				/* overrides vscodes style reset, displays as if inside web browser */
+				ul, ol {
+					list-style: initial !important;
+					margin-left: 10px !important;
+				}
+				h1, h2, h3, h4, h5, h6 {
+					font-weight: bold !important;
 				}
 				</style>
 			</head>

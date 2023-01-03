@@ -32,7 +32,8 @@
     "onCommand:chatgpt.explain",
     "onCommand:chatgpt.refactor",
     "onCommand:chatgpt.optimize",
-    "onCommand:chatgpt.problems"
+    "onCommand:chatgpt.findProblems",
+    "onCommand:chatgpt.documentation"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -56,6 +57,10 @@
       {
         "command": "chatgpt.optimize",
         "title": "ChatGPT: Optimize selection"
+      },
+      {
+        "command": "chatgpt.documentation",
+        "title": "ChatGPT: Write documentation"
       },
       {
         "command": "chatgpt.conversationId",
@@ -92,6 +97,11 @@
           "command": "chatgpt.optimize",
           "when": "editorHasSelection",
           "group": "chatgpt-menu-group@5"
+        },
+        {
+          "command": "chatgpt.documentation",
+          "when": "editorHasSelection",
+          "group": "chatgpt-menu-group@6"
         }
       ],
       "commandPalette": [
@@ -112,6 +122,10 @@
         },
         {
           "command": "chatgpt.optimize",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "chatgpt.documentation",
           "when": "editorHasSelection"
         },
         {
@@ -179,13 +193,19 @@
         },
         "chatgpt.promptPrefix.findProblems": {
           "type": "string",
-          "default": "Find problems with the following code, fix them and explain what was wrong (Do not change anything else): ",
+          "default": "Find problems with the following code, fix them and explain what was wrong (Do not change anything else, if there are no problems say so): ",
           "description": "The prompt prefix used for finding problems in the selected code",
           "order": 5
         },
+        "chatgpt.promptPrefix.documentation": {
+          "type": "string",
+          "default": "Write documentation for the following code: ",
+          "description": "The prompt prefix used for writing documentation for the selected code",
+          "order": 7
+        },
         "chatgpt.promptPrefix.optimize": {
           "type": "string",
-          "default": "Optimize the following code: ",
+          "default": "Optimize the following code if there is anything to improve, if not say so: ",
           "description": "The prompt prefix used for optimizing the selected code",
           "order": 6
         },
@@ -193,18 +213,19 @@
           "type": "boolean",
           "default": true,
           "description": "Keep the conversation going by using the same conversation ID for all requests (allows follow-up questions)",
-          "order": 7
-        },"chatgpt.timeoutLength": {
+          "order": 8
+        },
+        "chatgpt.timeoutLength": {
           "type": "number",
           "default": "120",
           "description": "How long should the request wait for a response before timing out (in seconds)",
-          "order": 8
+          "order": 9
         },
         "chatgpt.selectedInsideCodeblock": {
           "type": "boolean",
           "default": true,
           "description": "Append selected code as a codeblock (```...code...```) instead of plain text",
-          "order": 9
+          "order": 10
         }
       }
     }
