@@ -7,18 +7,20 @@
 
 This Visual Studio Code extension allows you to use the [unofficial ChatGPT API](https://github.com/transitive-bullshit/chatgpt-api) to generate code or natural language responses from OpenAI's [ChatGPT](https://chat.openai.com/chat) to your questions, right within the editor.
 
-🚀✨ Supercharge your coding with AI-powered assistance. Automatically write new code from scratch, ask questions, get explanations, refactor code, find bugs and more!
+🚀✨  Supercharge your coding with AI-powered assistance. Automatically write new code from scratch, ask questions, get explanations, refactor code, find bugs and more!
+
+#### 💥 Due to changes introduced by OpenAI, this extension may not work for some and only produce 403/429 errors - try [version using GPT3](https://github.com/timkmecl/codegpt) via official OpenAI API in this case ([marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.codegpt3)) 💥
 
 ### Links:
 
-- **[VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt)**
-- **[Github](https://github.com/timkmecl/chatgpt-vscode)**
+- **[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt)**
+- **[Github Repository](https://github.com/timkmecl/chatgpt-vscode)**
 
 <br>
 
-**💥Make sure to follow the installation instructions carefully! Due to changes introduced by OpenAI, this extension may not work for some and only produce 403/429 errors - try [version using GPT3](https://github.com/timkmecl/codegpt) via official OpenAI API in this case ([marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.codegpt3)) 💥**
+<a href="https://www.buymeacoffee.com/timkmecl" target="_blank"><img src="resources/buy-default-yellow-small.png" alt="Buy Me A Coffee" style="height: 40px" ></a>
 
-<br>
+
 
 <img src="examples/main.png" alt="Refactoring selected code using chatGPT"/>
 

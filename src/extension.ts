@@ -197,9 +197,10 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 							break;
 						}
 						let code = data.value;
-						code = code.replace(/([^\\])(\$)([^{0-9])/g, "$1\\$$$3");
+						const snippet = new vscode.SnippetString();
+						snippet.appendText(code);
 						// insert the code as a snippet into the active text editor
-						vscode.window.activeTextEditor?.insertSnippet(new vscode.SnippetString(code));
+						vscode.window.activeTextEditor?.insertSnippet(snippet);
 						break;
 					}
 				case 'prompt':
