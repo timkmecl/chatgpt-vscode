@@ -2,7 +2,7 @@
   "name": "chatgpt",
   "displayName": "ChatGPT: write and improve code using AI",
   "description": "Use ChatGPT right inside the IDE to enhance and automate your coding with AI-powered assistance (unofficial)",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "publisher": "timkmecl",
   "icon": "resources/extensionIcon.png",
   "license": "MIT",
@@ -61,10 +61,6 @@
       {
         "command": "chatgpt.documentation",
         "title": "ChatGPT: Write documentation"
-      },
-      {
-        "command": "chatgpt.conversationId",
-        "title": "Set ChatGPT conversation ID"
       },
       {
         "command": "chatgpt.resetConversation",
@@ -129,9 +125,6 @@
           "when": "editorHasSelection"
         },
         {
-          "command": "chatgpt.conversationId"
-        },
-        {
           "command": "chatgpt.resetConversation"
         }
       ]
@@ -147,31 +140,21 @@
     },
     "views": {
       "chatgpt": [
-				{
-					"type": "webview",
-					"id": "chatgpt.chatView",
-					"name": "ChatGPT"
-				}
+        {
+          "type": "webview",
+          "id": "chatgpt.chatView",
+          "name": "ChatGPT"
+        }
       ]
     },
     "configuration": {
       "title": "chatGPT",
       "type": "object",
       "properties": {
-        "chatgpt.sessionToken": {
+        "chatgpt.apiKey": {
+          "markdownDescription": "OpenAI API key from [https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys)",
           "type": "string",
-          "description": "A session token (`__Secure-next-auth.session-token`) you get when logged into chat.openai.com",
           "order": 0
-        },
-        "chatgpt.clearanceToken": {
-          "type": "string",
-          "description": "A clearance token (`cf_clearance`) you get when logged into chat.openai.com",
-          "order": 1
-        },
-        "chatgpt.userAgent": {
-          "type": "string",
-          "description": "Your browser's `user-agent` header from any request when logged into chat.openai.com",
-          "order": 1
         },
         "chatgpt.pasteOnClick": {
           "type": "boolean",
@@ -259,6 +242,7 @@
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
-    "chatgpt": "^2.1.1"
+    "chatgpt": "^4.0.1",
+    "node-fetch": "^3.3.0"
   }
 }
