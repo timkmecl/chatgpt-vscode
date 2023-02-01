@@ -7,9 +7,10 @@
 
 This Visual Studio Code extension allows you to use the [unofficial ChatGPT API](https://github.com/transitive-bullshit/chatgpt-api) to generate code or natural language responses from OpenAI's [ChatGPT](https://chat.openai.com/chat) to your questions, right within the editor.
 
-🚀✨  Supercharge your coding with AI-powered assistance. Automatically write new code from scratch, ask questions, get explanations, refactor code, find bugs and more!
+Supercharge your coding with AI-powered assistance! Automatically write new code from scratch, ask questions, get explanations, refactor code, find bugs and more 🚀✨
 
-#### 💥 Due to changes introduced by OpenAI, this extension may not work for some and only produce 403/429 errors - try [version using GPT3](https://github.com/timkmecl/codegpt) via official OpenAI API in this case ([marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.codegpt3)) 💥
+#### 📢 **New:**  Works again via new method, you only need an API key from OpenAI.
+*If you still get errors, try [version using GPT3](https://github.com/timkmecl/codegpt) via official OpenAI API in this case ([marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.codegpt3))*
 
 ### Links:
 
@@ -40,34 +41,39 @@ This Visual Studio Code extension allows you to use the [unofficial ChatGPT API]
 
 ## Installation
 
-To use this extension, install it from the VSCode marketplace or download and install `.vsix` file from Releases.
+To use this extension, install it from the VSCode marketplace.
 
-1. After the installation is complete, you will need to add your ChatGPT tokens to the extension settings in VSCode. To do this, open the `Settings` panel by going to the `Code` menu and selecting `Preferences`, then `Settings`.
+1. After the installation is complete, you will need to add your OpenAI API key to the extension settings in VSCode. To do this, open the `Settings` panel by going to the `File` menu and selecting `Preferences`, then `Settings`.
 2. In the search bar, type `ChatGPT` to filter the settings list.
-3. In the ChatGPT section, enter your session tokens in the top three field
+3. In the ChatGPT section, enter your API key in the top field
 
 After completing these steps, the extension should be ready to use.
 
-### Obtaining the three tokens
+### Obtaining API key
 
-To use this extension, you will need to authenticate with valid tokens from ChatGPT. To get a session token:
+To use this extension, you will need an API key from OpenAI. To obtain one, follow these steps:
 
-1. Go to https://chat.openai.com/chat and log in or sign up.
-2. Open the developer tools in your browser (preferably not Chrome, see below).
-3. Go to the `Application` tab and open the `Cookies` section.
-4. Copy the value for `__Secure-next-auth.session-token` and paste it into the `Session Token` field in the extension settings, and the value for `cf_clearance` into the `Clearance Token` field.
-5. Go to the `Network` tab and select any request.
-6. Copy the value for `user-agent` from the `Request Headers` and paste it into the `User Agent` field in the extension settings (it should look something like this: *`Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.46`*)
-6. Alternatively, type `navigator.userAgent` in the `Console` tab and copy the result without the quotes.
+1. Go to [OpenAI's website](https://platform.openai.com/account/api-keys). If you don't have an account, you will need to create one or sign up using your Google or Microsoft account.
+2. Click on the `Create new secret key` button.
+3. Copy the key and paste it into the `API Key` field in the extension settings.
 
-#### Update December 12, 2022
+### Building from source (not applicable for VSCode marketplace version)
 
-Yesterday, OpenAI added additional Cloudflare protections that make it more difficult to access the unofficial API. That's why you now need to set three different parameters instead of just the `Session Token`. There are also several **limitations** now (copied from [chatgpt-api](https://github.com/transitive-bullshit/chatgpt-api)):
-- Cloudflare `cf_clearance` **tokens expire after 2 hours**, so right now we recommend that you refresh your `cf_clearance` token every ~45 minutes or so.
-- Your `user-agent` and `IP address` **must match** from the real browser window you're logged in with to the one you're using for `ChatGPTAPI`.
-- You must use **`node >= 18`**. Type `node -v` in the terminal to check you version.
-- You should **not be using this account while the extension is using it**, because that browser window may refresh one of your tokens and invalidate the extension's session.
-- There are currently users who have issues even when following all of the above (see this [comment](https://github.com/timkmecl/chatgpt-vscode/issues/4#issuecomment-1350562961)). **If you're using Chrome** to obtain the tokens, try using a different browser (e.g. Brave), as it seems like using Chrome is often the cause of this.
+To build the extension from source, clone the repository and run `npm install` to install the dependencies. You have to change some code in `chatgpt` module because VSCode runtime does not support `fetch`. Open `node_modules/chatgpt/dist/index.js` and add the following code at the top of the file:
+
+```js
+import fetch from 'node-fetch'
+```
+
+Then remove the following lines (around line 15):
+
+```js
+// src/fetch.ts
+var fetch = globalThis.fetch;
+if (typeof fetch !== "function") {
+  throw new Error("Invalid environment: global fetch not defined");
+}
+```
 
 
 ## Using the Extension
@@ -98,16 +104,10 @@ You can select some code in the editor, right click on it and choose one of the 
 Because ChatGPT is a conversational AI, you can ask follow-up questions to the response. The conversation context is maintained between queries, so you can ask multiple questions in a row. 
 To **reset the conversation context**, click `ctrl+shift+p` and select `ChatGPT: Reset Conversation`.
 
-
-## Common issues
-
-
-- *ERROR 403 forbidden*: Make sure you exactly followed [these instruction on obtaining the tokens](#obtaining-the-three-tokens). If you still get this error, check wheteher your node version is >= 18. Otherwise check [this list](#update-december-12-2022) for other potential issues caused by OpenAI's use of CloudFlare. **If you're using Chrome to obtain the tokens, try using a different browser** (e.g. Brave), as it seems like using Chrome is often the cause of the issues. *Some users still seem to have issues with this even when following the instructions (see [here](https://github.com/mpociot/chatgpt-vscode/issues/15) and [here for potential causes](https://github.com/timkmecl/chatgpt-vscode/issues/4#issuecomment-1350562961))*
-- *ERROR 429 too many requests*: This can be solved by using `ctrl+shift+p` and selecting `ChatGPT: Reset Conversation` (but it will also delete the current conversation context). It can be caused by sending requests too quickly, but also when the previous request timeouted. If it keeps happening try increasing the timeout in the extension settings. *Also it looks like OpenAI now sends a timeout after about a minute which also causes this when it happens (see [this](https://github.com/transitive-bullshit/chatgpt-api/issues/111)), I am currently trying to find a way to fix this.*
-
 ---
 
-Please note that this extension is currently a proof of concept and may have some limitations or bugs. We welcome feedback and contributions to improve the extension.
+Please note that this extension is currently a proof of concept and may have some limitations or bugs. We welcome feedback and contributions to improve the extension. Also check out [CodeGPT](https://github.com/timkmecl/codegpt) extension that uses official OpenAI API and also supports other GPT3 models.
+If you enjoy this extension, please consider [buying me a coffee ☕️](https://www.buymeacoffee.com/timkmecl) to support my work! 
 
 
 ## Credits
