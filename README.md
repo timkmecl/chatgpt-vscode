@@ -9,7 +9,8 @@ This Visual Studio Code extension allows you to use the [unofficial ChatGPT API]
 
 Supercharge your coding with AI-powered assistance! Automatically write new code from scratch, ask questions, get explanations, refactor code, find bugs and more 🚀✨
 
-#### 📢 **New method:** you only need an API key from OpenAI. 💥Doesn't work anymore, broken by OpenAI on Feb 2nd - try [version using GPT3](https://github.com/timkmecl/codegpt) via official OpenAI API instead ([marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.codegpt3))💥
+#### 📢 **New:**  Works again via new method, you only need an API key from OpenAI.
+*If you still get errors, try [version using GPT3](https://github.com/timkmecl/codegpt) via official OpenAI API in this case ([marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.codegpt3))*
 
 ### Links:
 
