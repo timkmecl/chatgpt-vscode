@@ -75,6 +75,11 @@ if (typeof fetch !== "function") {
 }
 ```
 
+You also need to copy `encoder.json` and `vocab.bpe` from `node_modules/gpt-3-encoder/` into `dist/` folder. You can do this by running the following commands:
+
+```bash
+cp node_modules/gpt-3-encoder/{encoder.json,vocab.bpe} dist/
+```
 
 ## Using the Extension
 
