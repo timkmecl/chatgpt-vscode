@@ -9,8 +9,8 @@ This Visual Studio Code extension allows you to use the [unofficial ChatGPT API]
 
 Supercharge your coding with AI-powered assistance! Automatically write new code from scratch, ask questions, get explanations, refactor code, find bugs and more 🚀✨
 
-#### 📢 **New:**  Works again via new method, you only need an API key from OpenAI.
-*If you still get errors, try [version using GPT3](https://github.com/timkmecl/codegpt) via official OpenAI API in this case ([marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.codegpt3))*
+#### 📢 Currently doesn't work because the model used was disabled, try [version using GPT3](https://github.com/timkmecl/codegpt) via official OpenAI API instead ([marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.codegpt3), [github](https://github.com/timkmecl/codegpt)). 
+*It will be updated as soon as there is a functioning way to query ChatGPT model again. Info for building from source below.*
 
 ### Links:
 
@@ -58,6 +58,8 @@ To use this extension, you will need an API key from OpenAI. To obtain one, foll
 3. Copy the key and paste it into the `API Key` field in the extension settings.
 
 ### Building from source (not applicable for VSCode marketplace version)
+
+*Update: The model used in this extension was disabled. You can make it work by updating the `chatgpt` module to the newest version, however it will use GPT-3 instead of ChatGPT which means spending your OpenAI account's credits and worse performance.*
 
 To build the extension from source, clone the repository and run `npm install` to install the dependencies. You have to change some code in `chatgpt` module because VSCode runtime does not support `fetch`. Open `node_modules/chatgpt/dist/index.js` and add the following code at the top of the file:
 
