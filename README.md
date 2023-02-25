@@ -19,8 +19,6 @@ Supercharge your coding with AI-powered assistance! Automatically write new code
 
 <br>
 
-<a href="https://www.buymeacoffee.com/timkmecl" target="_blank"><img src="resources/buy-default-yellow-small.png" alt="Buy Me A Coffee" style="height: 40px" ></a>
-
 
 
 <img src="examples/main.png" alt="Refactoring selected code using chatGPT"/>
@@ -115,6 +113,9 @@ To **reset the conversation context**, click `ctrl+shift+p` and select `ChatGPT:
 
 Please note that this extension is currently a proof of concept and may have some limitations or bugs. We welcome feedback and contributions to improve the extension. Also check out [CodeGPT](https://github.com/timkmecl/codegpt) extension that uses official OpenAI API and also supports other GPT3 models.
 If you enjoy this extension, please consider [buying me a coffee ☕️](https://www.buymeacoffee.com/timkmecl) to support my work! 
+
+
+<a href="https://www.buymeacoffee.com/timkmecl" target="_blank"><img src="resources/buy-default-yellow-small.png" alt="Buy Me A Coffee" style="height: 40px" ></a>
 
 
 ## Credits
