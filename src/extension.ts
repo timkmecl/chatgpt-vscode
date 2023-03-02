@@ -266,11 +266,10 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 				response = res.text;
 				if (this._settings.keepConversation){
 					this._conversation = {
-						conversationId: res.conversationId,
 						parentMessageId: res.id
 					};
 				}
-			} catch (e) {
+			} catch (e:any) {
 				console.error(e);
 				response += `\n\n---\n[ERROR] ${e}`;
 			}

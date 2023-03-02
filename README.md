@@ -5,12 +5,13 @@
 [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/timkmecl.chatgpt)](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt)
 [![Github stars](https://img.shields.io/github/stars/timkmecl/chatgpt-vscode)](https://github.com/timkmecl/chatgpt-vscode)
 
-This Visual Studio Code extension allows you to use the [unofficial ChatGPT API](https://github.com/transitive-bullshit/chatgpt-api) to generate code or natural language responses from OpenAI's [ChatGPT](https://chat.openai.com/chat) to your questions, right within the editor.
+This Visual Studio Code extension allows you to use the [ChatGPT API](https://github.com/transitive-bullshit/chatgpt-api) to generate code or natural language responses from OpenAI's [ChatGPT](https://chat.openai.com/chat) to your questions, right within the editor.
 
 Supercharge your coding with AI-powered assistance! Automatically write new code from scratch, ask questions, get explanations, refactor code, find bugs and more 🚀✨
+ 
+*📢 **Extension now uses official ChatGPT API!** This however means that using the extension now spends your OpenAI account's credits (0.002$/1k tokens). If you don't have any credits on your account, you will receive an error.*
 
-#### 📢 Currently doesn't work because the model used was disabled, try [version using GPT3](https://github.com/timkmecl/codegpt) via official OpenAI API instead ([marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.codegpt3), [github](https://github.com/timkmecl/codegpt)). 
-*It will be updated as soon as there is a functioning way to query ChatGPT model again. Info for building from source below.*
+*To use the free codex models try [version using GPT3](https://github.com/timkmecl/codegpt) instead ([marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.codegpt3), [github](https://github.com/timkmecl/codegpt))*
 
 ### Links:
 
@@ -70,16 +71,32 @@ Then remove the following lines (around line 15):
 ```js
 // src/fetch.ts
 var fetch = globalThis.fetch;
-if (typeof fetch !== "function") {
-  throw new Error("Invalid environment: global fetch not defined");
+```
+
+You also need to replace the following part near the top of the file:
+
+```js
+// src/tokenizer.ts
+import { encoding_for_model } from "@dqbd/tiktoken";
+var tokenizer = encoding_for_model("text-davinci-003");
+function encode(input) {
+  return tokenizer.encode(input);
 }
 ```
 
-You also need to copy `encoder.json` and `vocab.bpe` from `node_modules/gpt-3-encoder/` into `dist/` folder. You can do this by running the following commands:
+with
 
-```bash
-cp node_modules/gpt-3-encoder/{encoder.json,vocab.bpe} dist/
+```js
+// src/tokenizer.ts
+import GPT3TokenizerImport from "gpt3-tokenizer";
+var GPT3Tokenizer = typeof GPT3TokenizerImport === "function" ? GPT3TokenizerImport : GPT3TokenizerImport.default;
+var tokenizer = new GPT3Tokenizer({ type: "gpt3" });
+function encode(input) {
+  return tokenizer.encode(input).bpe;
+}
 ```
+
+due to the fact that the `@dqbd/tiktoken` module is causing problems with the VSCode runtime. *If you know how to fix this, please let me know.*
 
 ## Using the Extension
 
@@ -106,8 +123,8 @@ You can select some code in the editor, right click on it and choose one of the 
 `Ask ChatGPT` is also available when nothing is selected. For the other four commands, you can **customize the exact prompt** that will be sent to the AI by editing the extension settings in VSCode Preferences.
 
 
-Because ChatGPT is a conversational AI, you can ask follow-up questions to the response. The conversation context is maintained between queries, so you can ask multiple questions in a row. 
-To **reset the conversation context**, click `ctrl+shift+p` and select `ChatGPT: Reset Conversation`.
+Because ChatGPT is a conversational AI, you can ask follow-up questions to the response. The conversation context is maintained between queries, so you can ask multiple questions in a row (this can be disabled in the extension settings.). 
+If you aren't satisfied with an answer and would like to **retry the request**, click `ctrl+shift+p` and select `Retry ChatGPT request`. To **reset the conversation context**, click `ctrl+shift+p` and select `ChatGPT: Reset Conversation`.
 
 ---
 
