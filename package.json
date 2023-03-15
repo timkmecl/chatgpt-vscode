@@ -213,6 +213,12 @@
           "default": true,
           "description": "Append selected code as a codeblock (```...code...```) instead of plain text",
           "order": 10
+        },
+        "chatgpt.codeblockWithLanguageId": {
+          "type": "boolean",
+          "default": true,
+          "description": "Append language id of the selected code to the codeblock (```language...code...```)",
+          "order": 11
         }
       }
     }

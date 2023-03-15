@@ -3,7 +3,7 @@ import { ChatGPTAPI } from 'chatgpt';
 
 
 type AuthInfo = {apiKey?: string};
-type Settings = {selectedInsideCodeblock?: boolean, pasteOnClick?: boolean, keepConversation?: boolean, timeoutLength?: number};
+type Settings = {selectedInsideCodeblock?: boolean, codeblockWithLanguageId?: false, pasteOnClick?: boolean, keepConversation?: boolean, timeoutLength?: number};
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -21,6 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	provider.setSettings({
 		selectedInsideCodeblock: config.get('selectedInsideCodeblock') || false,
+		codeblockWithLanguageId: config.get('codeblockWithLanguageId') || false,
 		pasteOnClick: config.get('pasteOnClick') || false,
 		keepConversation: config.get('keepConversation') || false,
 		timeoutLength: config.get('timeoutLength') || 60,
@@ -63,6 +64,9 @@ export function activate(context: vscode.ExtensionContext) {
 		} else if (event.affectsConfiguration('chatgpt.selectedInsideCodeblock')) {
 			const config = vscode.workspace.getConfiguration('chatgpt');
 			provider.setSettings({ selectedInsideCodeblock: config.get('selectedInsideCodeblock') || false });
+		} else if (event.affectsConfiguration('chatgpt.codeblockWithLanguageId')) {
+			const config = vscode.workspace.getConfiguration('chatgpt');
+			provider.setSettings({ codeblockWithLanguageId: config.get('codeblockWithLanguageId') || false });
 		} else if (event.affectsConfiguration('chatgpt.pasteOnClick')) {
 			const config = vscode.workspace.getConfiguration('chatgpt');
 			provider.setSettings({ pasteOnClick: config.get('pasteOnClick') || false });
@@ -94,6 +98,7 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 
 	private _settings: Settings = {
 		selectedInsideCodeblock: false,
+		codeblockWithLanguageId: false,
 		pasteOnClick: true,
 		keepConversation: true,
 		timeoutLength: 60
@@ -210,12 +215,15 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 		// Get the selected text of the active editor
 		const selection = vscode.window.activeTextEditor?.selection;
 		const selectedText = vscode.window.activeTextEditor?.document.getText(selection);
+		// Get the language id of the selected text of the active editor
+		// If a user does not want to append this information to their prompt, leave it as an empty string
+		const languageId = (this._settings.codeblockWithLanguageId ? vscode.window.activeTextEditor?.document?.languageId : undefined) || "";
 		let searchPrompt = '';
 
 		if (selection && selectedText) {
 			// If there is a selection, add the prompt and the selected text to the search prompt
 			if (this._settings.selectedInsideCodeblock) {
-				searchPrompt = `${prompt}\n\`\`\`\n${selectedText}\n\`\`\``;
+				searchPrompt = `${prompt}\n\`\`\`${languageId}\n${selectedText}\n\`\`\``;
 			} else {
 				searchPrompt = `${prompt}\n${selectedText}\n`;
 			}
