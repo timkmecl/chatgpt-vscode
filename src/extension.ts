@@ -25,6 +25,8 @@ export function activate(context: vscode.ExtensionContext) {
 		pasteOnClick: config.get('pasteOnClick') || false,
 		keepConversation: config.get('keepConversation') || false,
 		timeoutLength: config.get('timeoutLength') || 60,
+		apiUrl: config.get('apiUrl') || 'https://api.openai.com/v1',
+		model: config.get('model') || 'gpt-3.5-turbo'
 	});
 
 	// Register the provider with the extension's context
