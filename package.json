@@ -156,12 +156,12 @@
       "type": "object",
       "properties": {
         "chatgpt.apiKey": {
-          "markdownDescription": "OpenAI API key from [https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys) Or API2D Key from [api2d.com](https://api2d.com)",
+          "markdownDescription": "OpenAI API key from [https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys)",
           "type": "string",
           "order": 0
         },
         "chatgpt.apiUrl": {
-          "markdownDescription": "OpenAI API URL, or API2D URLn, Like https://openai.api2d.net/v1",
+          "markdownDescription": "OpenAI API URL or other custom api url, Like https://openai.xxxxxx.net/v1",
           "type": "string",
           "default": "https://api.openai.com/v1",
           "order": 1
