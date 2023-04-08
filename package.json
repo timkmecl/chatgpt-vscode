@@ -7,7 +7,7 @@
   "icon": "resources/extensionIcon.png",
   "license": "MIT",
   "repository": {
-    "url": "https://github.com/easychen/chatgpt-vscode"
+    "url": "https://github.com/timkmecl/chatgpt-vscode"
   },
   "engines": {
     "vscode": "^1.73.0"
