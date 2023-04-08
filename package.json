@@ -1,8 +1,8 @@
 {
   "name": "code-gpt-4",
-  "displayName": "CodeGPT4: write and improve code using GPT3.5 or 4 from openai or api2d.com",
+  "displayName": "CodeGPT4: write and improve code using GPT3.5 or 4 API from openai or api2d.com",
   "description": "Fork from chatgpt-vscode , add GPT4 and custom api end point. Use ChatGPT right inside the IDE to enhance and automate your coding with AI-powered assistance (unofficial)",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "publisher": "easychen",
   "icon": "resources/extensionIcon.png",
   "license": "MIT",
@@ -163,7 +163,7 @@
         "chatgpt.apiUrl": {
           "markdownDescription": "OpenAI API URL, or API2D URLn, Like https://openai.api2d.net/v1",
           "type": "string",
-          "default":"https://api.openai.com/v1",
+          "default": "https://api.openai.com/v1",
           "order": 1
         },
         "chatgpt.model": {
