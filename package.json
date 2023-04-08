@@ -1,13 +1,13 @@
 {
-  "name": "chatgpt",
-  "displayName": "ChatGPT: write and improve code using AI",
-  "description": "Use ChatGPT right inside the IDE to enhance and automate your coding with AI-powered assistance (unofficial)",
+  "name": "code-gpt-4",
+  "displayName": "CodeGPT4: write and improve code using GPT3.5 or 4 from openai or api2d.com",
+  "description": "Fork from chatgpt-vscode , add GPT4 and custom api end point. Use ChatGPT right inside the IDE to enhance and automate your coding with AI-powered assistance (unofficial)",
   "version": "1.0.0",
-  "publisher": "timkmecl",
+  "publisher": "easychen",
   "icon": "resources/extensionIcon.png",
   "license": "MIT",
   "repository": {
-    "url": "https://github.com/timkmecl/chatgpt-vscode"
+    "url": "https://github.com/easychen/chatgpt-vscode"
   },
   "engines": {
     "vscode": "^1.73.0"
@@ -156,9 +156,25 @@
       "type": "object",
       "properties": {
         "chatgpt.apiKey": {
-          "markdownDescription": "OpenAI API key from [https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys)",
+          "markdownDescription": "OpenAI API key from [https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys) Or API2D Key from [api2d.com](https://api2d.com)",
           "type": "string",
           "order": 0
+        },
+        "chatgpt.apiUrl": {
+          "markdownDescription": "OpenAI API URL, or API2D URLn, Like https://openai.api2d.net/v1",
+          "type": "string",
+          "default":"https://api.openai.com/v1",
+          "order": 1
+        },
+        "chatgpt.model": {
+          "type": "string",
+          "enum": [
+            "gpt-3.5-turbo",
+            "gpt-4"
+          ],
+          "default": "gpt-3.5-turbo",
+          "description": "Which GPT model to use",
+          "order": 1
         },
         "chatgpt.pasteOnClick": {
           "type": "boolean",
@@ -252,7 +268,7 @@
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
-    "chatgpt": "^5.0.4",
+    "chatgpt": "^5.2.2",
     "gpt3-tokenizer": "^1.1.5",
     "node-fetch": "^3.3.0"
   }
