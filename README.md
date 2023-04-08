@@ -1,7 +1,3 @@
-# CodeGPT4 is a fork of ChatGPT extension for VSCode
-
-with GPT4 and custom api endpoint support 
-
 # ChatGPT extension for VSCode
 
 [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/timkmecl.chatgpt)](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt)
@@ -101,8 +97,6 @@ function encode(input) {
 ```
 
 due to the fact that the `@dqbd/tiktoken` module is causing problems with the VSCode runtime. *If you know how to fix this, please let me know.*
-
-> Added by Easy:
 
 `node_modules/chatgpt/build/index.d.ts`
 
