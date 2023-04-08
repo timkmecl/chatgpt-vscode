@@ -109,7 +109,7 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 		pasteOnClick: true,
 		keepConversation: true,
 		timeoutLength: 60,
-		apiUrl: 'https://openai.api2d.net/v1',
+		apiUrl: 'https://api.openai.com/v1',
 		model: 'gpt-3.5-turbo'
 	};
 	private _authInfo?: AuthInfo;
@@ -127,6 +127,7 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 
 	public setSettings(settings: Settings) {
 		this._settings = {...this._settings, ...settings};
+		this._newAPI();
 	}
 
 	public getSettings() {
@@ -246,7 +247,7 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 		this._fullPrompt = searchPrompt;
 
 		if (!this._chatGPTAPI) {
-			response = '[ERROR] "API key not set or wrong, please go to extension settings to set it (read README.md for more info)"'+JSON.stringify(this._authInfo)+"\n"+JSON.stringify(this._settings);
+			response = '[ERROR] "API key not set or wrong, please go to extension settings to set it (read README.md for more info)"';
 		} else {
 			// If successfully signed in
 			console.log("sendMessage");
