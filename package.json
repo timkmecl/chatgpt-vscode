@@ -2,7 +2,7 @@
   "name": "chatgpt",
   "displayName": "ChatGPT: write and improve code using AI",
   "description": "Use ChatGPT right inside the IDE to enhance and automate your coding with AI-powered assistance (unofficial)",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "timkmecl",
   "icon": "resources/extensionIcon.png",
   "license": "MIT",
@@ -160,6 +160,22 @@
           "type": "string",
           "order": 0
         },
+        "chatgpt.apiUrl": {
+          "markdownDescription": "OpenAI API URL or other custom api url, Like https://openai.xxxxxx.net/v1",
+          "type": "string",
+          "default": "https://api.openai.com/v1",
+          "order": 1
+        },
+        "chatgpt.model": {
+          "type": "string",
+          "enum": [
+            "gpt-3.5-turbo",
+            "gpt-4"
+          ],
+          "default": "gpt-3.5-turbo",
+          "description": "Which GPT model to use",
+          "order": 1
+        },
         "chatgpt.pasteOnClick": {
           "type": "boolean",
           "default": true,
@@ -252,7 +268,7 @@
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
-    "chatgpt": "^5.0.4",
+    "chatgpt": "^5.2.2",
     "gpt3-tokenizer": "^1.1.5",
     "node-fetch": "^3.3.0"
   }

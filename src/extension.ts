@@ -3,7 +3,7 @@ import { ChatGPTAPI } from 'chatgpt';
 
 
 type AuthInfo = {apiKey?: string};
-type Settings = {selectedInsideCodeblock?: boolean, codeblockWithLanguageId?: false, pasteOnClick?: boolean, keepConversation?: boolean, timeoutLength?: number};
+type Settings = {selectedInsideCodeblock?: boolean, codeblockWithLanguageId?: false, pasteOnClick?: boolean, keepConversation?: boolean, timeoutLength?: number, model?: string, apiUrl?: string};
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -25,6 +25,8 @@ export function activate(context: vscode.ExtensionContext) {
 		pasteOnClick: config.get('pasteOnClick') || false,
 		keepConversation: config.get('keepConversation') || false,
 		timeoutLength: config.get('timeoutLength') || 60,
+		apiUrl: config.get('apiUrl') || 'https://api.openai.com/v1',
+		model: config.get('model') || 'gpt-3.5-turbo'
 	});
 
 	// Register the provider with the extension's context
@@ -61,7 +63,14 @@ export function activate(context: vscode.ExtensionContext) {
 		if (event.affectsConfiguration('chatgpt.apiKey')) {
 			const config = vscode.workspace.getConfiguration('chatgpt');
 			provider.setAuthenticationInfo({apiKey: config.get('apiKey')});
+		}else if (event.affectsConfiguration('chatgpt.apiUrl')) {
+			const config = vscode.workspace.getConfiguration('chatgpt');
+			provider.setSettings({ apiUrl: config.get('apiUrl') || 'gpt-3.5-turbo' });
 		} else if (event.affectsConfiguration('chatgpt.selectedInsideCodeblock')) {
+			const config = vscode.workspace.getConfiguration('chatgpt');
+			provider.setSettings({ model: config.get('model') || 'gpt-3.5-turbo' }); 
+		}
+		else if (event.affectsConfiguration('chatgpt.selectedInsideCodeblock')) {
 			const config = vscode.workspace.getConfiguration('chatgpt');
 			provider.setSettings({ selectedInsideCodeblock: config.get('selectedInsideCodeblock') || false });
 		} else if (event.affectsConfiguration('chatgpt.codeblockWithLanguageId')) {
@@ -101,7 +110,9 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 		codeblockWithLanguageId: false,
 		pasteOnClick: true,
 		keepConversation: true,
-		timeoutLength: 60
+		timeoutLength: 60,
+		apiUrl: 'https://api.openai.com/v1',
+		model: 'gpt-3.5-turbo'
 	};
 	private _authInfo?: AuthInfo;
 
@@ -118,6 +129,7 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 
 	public setSettings(settings: Settings) {
 		this._settings = {...this._settings, ...settings};
+		this._newAPI();
 	}
 
 	public getSettings() {
@@ -126,13 +138,16 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 
 	// This private method initializes a new ChatGPTAPI instance
 	private _newAPI() {
-		console.log("New API");
-		if (!this._authInfo || !this._authInfo?.apiKey) {
-			console.warn("API key not set, please go to extension settings (read README.md for more info)");
-		}else{
+		console.log("New API", this._authInfo);
+		if (!this._authInfo || !this._authInfo?.apiKey ||!this._settings?.apiUrl ) {
+			console.warn("API key or API URL not set, please go to extension settings (read README.md for more info)");
+		}else{	
 			this._chatGPTAPI = new ChatGPTAPI({
-				apiKey: this._authInfo.apiKey
+				apiKey: this._authInfo.apiKey,
+				apiBaseUrl:this._settings.apiUrl,
+				completionParams:{model:this._settings.model||"gpt-3.5-turbo"},
 			});
+			// console.log( this._chatGPTAPI );
 		}
 	}
 

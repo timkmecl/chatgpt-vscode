@@ -98,6 +98,20 @@ function encode(input) {
 
 due to the fact that the `@dqbd/tiktoken` module is causing problems with the VSCode runtime. *If you know how to fix this, please let me know.*
 
+`node_modules/chatgpt/build/index.d.ts`
+
+first line
+```js
+import * as Keyv from 'keyv';
+```
+
+line 4 
+```js
+type FetchFn = any;
+```
+
+
+
 ## Using the Extension
 
 To use the extension, open a text editor in Visual Studio Code and open the ChatGPT panel by clicking on the ChatGPT icon in the sidebar. This will open a panel with an input field where you can enter your prompt or question. By clicking enter, it will be sent to ChatGPT. Its response will be displayed below the input field in the sidebar (note that it may take some time for it to be calculated).
