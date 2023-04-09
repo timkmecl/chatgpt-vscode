@@ -1,17 +1,13 @@
-# ChatGPT extension for VSCode
+# ChatGPT and GPT4 extension for VSCode
 
 [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/timkmecl.chatgpt)](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt)
 [![Visual Studio Marketplace Rating (Stars)](https://img.shields.io/visual-studio-marketplace/stars/timkmecl.chatgpt)](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt)
 [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/timkmecl.chatgpt)](https://marketplace.visualstudio.com/items?itemName=timkmecl.chatgpt)
 [![Github stars](https://img.shields.io/github/stars/timkmecl/chatgpt-vscode)](https://github.com/timkmecl/chatgpt-vscode)
 
-This Visual Studio Code extension allows you to use the [ChatGPT API](https://github.com/transitive-bullshit/chatgpt-api) to generate code or natural language responses from OpenAI's [ChatGPT](https://chat.openai.com/chat) to your questions, right within the editor.
+This Visual Studio Code extension allows you to use the [ChatGPT API](https://github.com/transitive-bullshit/chatgpt-api) to generate code or natural language responses from OpenAI's [ChatGPT](https://chat.openai.com/chat) or [GPT4](https://openai.com/product/gpt-4) to your questions, right within the editor.
 
 Supercharge your coding with AI-powered assistance! Automatically write new code from scratch, ask questions, get explanations, refactor code, find bugs and more 🚀✨
- 
-*📢 **Extension now uses official ChatGPT API!** This however means that using the extension now spends your OpenAI account's credits (0.002$/1k tokens). If you don't have any credits on your account, you will receive an error.*
-
-*To use the free codex models try [version using GPT3](https://github.com/timkmecl/codegpt) instead ([marketplace](https://marketplace.visualstudio.com/items?itemName=timkmecl.codegpt3), [github](https://github.com/timkmecl/codegpt))*
 
 ### Links:
 
@@ -38,7 +34,7 @@ Supercharge your coding with AI-powered assistance! Automatically write new code
 
 
 
-## Installation
+## Setup
 
 To use this extension, install it from the VSCode marketplace.
 
@@ -56,59 +52,10 @@ To use this extension, you will need an API key from OpenAI. To obtain one, foll
 2. Click on the `Create new secret key` button.
 3. Copy the key and paste it into the `API Key` field in the extension settings.
 
-### Building from source (not applicable for VSCode marketplace version)
+### Settings
 
-*Update: The model used in this extension was disabled. You can make it work by updating the `chatgpt` module to the newest version, however it will use GPT-3 instead of ChatGPT which means spending your OpenAI account's credits and worse performance.*
-
-To build the extension from source, clone the repository and run `npm install` to install the dependencies. You have to change some code in `chatgpt` module because VSCode runtime does not support `fetch`. Open `node_modules/chatgpt/dist/index.js` and add the following code at the top of the file:
-
-```js
-import fetch from 'node-fetch'
-```
-
-Then remove the following lines (around line 15):
-
-```js
-// src/fetch.ts
-var fetch = globalThis.fetch;
-```
-
-You also need to replace the following part near the top of the file:
-
-```js
-// src/tokenizer.ts
-import { encoding_for_model } from "@dqbd/tiktoken";
-var tokenizer = encoding_for_model("text-davinci-003");
-function encode(input) {
-  return tokenizer.encode(input);
-}
-```
-
-with
-
-```js
-// src/tokenizer.ts
-import GPT3TokenizerImport from "gpt3-tokenizer";
-var GPT3Tokenizer = typeof GPT3TokenizerImport === "function" ? GPT3TokenizerImport : GPT3TokenizerImport.default;
-var tokenizer = new GPT3Tokenizer({ type: "gpt3" });
-function encode(input) {
-  return tokenizer.encode(input).bpe;
-}
-```
-
-due to the fact that the `@dqbd/tiktoken` module is causing problems with the VSCode runtime. *If you know how to fix this, please let me know.*
-
-`node_modules/chatgpt/build/index.d.ts`
-
-first line
-```js
-import * as Keyv from 'keyv';
-```
-
-line 4 
-```js
-type FetchFn = any;
-```
+The extension can be configured or customized by changing several settings. 
+You can choose **between ChatGPT and GPT4** by changing the `Model` setting (only if you already have access to GPT4 API). A custom API URL can also be set in the `API URL` field (probably looks something like `https://openai.xxxxxx.net/v1`, can be used to connect to a self-hosted instance of the API or a proxy).
 
 
 
@@ -147,6 +94,64 @@ If you enjoy this extension, please consider [buying me a coffee ☕️](https:/
 
 
 <a href="https://www.buymeacoffee.com/timkmecl" target="_blank"><img src="resources/buy-default-yellow-small.png" alt="Buy Me A Coffee" style="height: 40px" ></a>
+
+
+
+
+## Building from source (not applicable for VSCode marketplace version)
+
+To build the extension from source, clone the repository and run `npm install` to install the dependencies. You have to change some code in `chatgpt` module because VSCode runtime does not support `fetch`. Open `node_modules/chatgpt/dist/index.js` and add the following code at the top of the file:
+
+```js
+import fetch from 'node-fetch'
+```
+
+Then remove the following lines (around line 20):
+
+```js
+// src/fetch.ts
+var fetch = globalThis.fetch;
+```
+
+You also need to replace the following part near the top of the file:
+
+```js
+// src/tokenizer.ts
+import { encoding_for_model } from "@dqbd/tiktoken";
+var tokenizer = encoding_for_model("text-davinci-003");
+function encode(input) {
+  return tokenizer.encode(input);
+}
+```
+
+with
+
+```js
+// src/tokenizer.ts
+import GPT3TokenizerImport from "gpt3-tokenizer";
+var GPT3Tokenizer = typeof GPT3TokenizerImport === "function" ? GPT3TokenizerImport : GPT3TokenizerImport.default;
+var tokenizer = new GPT3Tokenizer({ type: "gpt3" });
+function encode(input) {
+  return tokenizer.encode(input).bpe;
+}
+```
+
+due to the fact that the `@dqbd/tiktoken` module is causing problems with the VSCode runtime. Delete `node_modules/@dqbd/tiktoken` directory as well. *If you know how to fix this, please let me know.*
+
+In file `node_modules/chatgpt/build/index.d.ts`, change line 1 to
+
+```js
+import * as Keyv from 'keyv';
+```
+
+and line 4 to
+
+```js
+type FetchFn = any;
+```
+
+
+
 
 
 ## Credits

@@ -6,6 +6,8 @@ type AuthInfo = {apiKey?: string};
 type Settings = {selectedInsideCodeblock?: boolean, codeblockWithLanguageId?: false, pasteOnClick?: boolean, keepConversation?: boolean, timeoutLength?: number, model?: string, apiUrl?: string};
 
 
+const BASE_URL = 'https://api.openai.com/v1';
+
 export function activate(context: vscode.ExtensionContext) {
 
 	console.log('activating extension "chatgpt"');
@@ -25,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
 		pasteOnClick: config.get('pasteOnClick') || false,
 		keepConversation: config.get('keepConversation') || false,
 		timeoutLength: config.get('timeoutLength') || 60,
-		apiUrl: config.get('apiUrl') || 'https://api.openai.com/v1',
+		apiUrl: config.get('apiUrl') || BASE_URL,
 		model: config.get('model') || 'gpt-3.5-turbo'
 	});
 
@@ -65,12 +67,12 @@ export function activate(context: vscode.ExtensionContext) {
 			provider.setAuthenticationInfo({apiKey: config.get('apiKey')});
 		}else if (event.affectsConfiguration('chatgpt.apiUrl')) {
 			const config = vscode.workspace.getConfiguration('chatgpt');
-			provider.setSettings({ apiUrl: config.get('apiUrl') || 'gpt-3.5-turbo' });
-		} else if (event.affectsConfiguration('chatgpt.selectedInsideCodeblock')) {
+			let url = config.get('apiUrl')as string || BASE_URL;
+			provider.setSettings({ apiUrl: url });
+		} else if (event.affectsConfiguration('chatgpt.model')) {
 			const config = vscode.workspace.getConfiguration('chatgpt');
 			provider.setSettings({ model: config.get('model') || 'gpt-3.5-turbo' }); 
-		}
-		else if (event.affectsConfiguration('chatgpt.selectedInsideCodeblock')) {
+		} else if (event.affectsConfiguration('chatgpt.selectedInsideCodeblock')) {
 			const config = vscode.workspace.getConfiguration('chatgpt');
 			provider.setSettings({ selectedInsideCodeblock: config.get('selectedInsideCodeblock') || false });
 		} else if (event.affectsConfiguration('chatgpt.codeblockWithLanguageId')) {
@@ -111,7 +113,7 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 		pasteOnClick: true,
 		keepConversation: true,
 		timeoutLength: 60,
-		apiUrl: 'https://api.openai.com/v1',
+		apiUrl: BASE_URL,
 		model: 'gpt-3.5-turbo'
 	};
 	private _authInfo?: AuthInfo;
@@ -128,8 +130,15 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 	}
 
 	public setSettings(settings: Settings) {
+		let changeModel = false;
+		if (settings.apiUrl || settings.model) {
+			changeModel = true;
+		}
 		this._settings = {...this._settings, ...settings};
-		this._newAPI();
+
+		if (changeModel) {
+			this._newAPI();
+		}
 	}
 
 	public getSettings() {
@@ -138,14 +147,14 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 
 	// This private method initializes a new ChatGPTAPI instance
 	private _newAPI() {
-		console.log("New API", this._authInfo);
-		if (!this._authInfo || !this._authInfo?.apiKey ||!this._settings?.apiUrl ) {
+		console.log("New API");
+		if (!this._authInfo || !this._settings?.apiUrl) {
 			console.warn("API key or API URL not set, please go to extension settings (read README.md for more info)");
 		}else{	
 			this._chatGPTAPI = new ChatGPTAPI({
-				apiKey: this._authInfo.apiKey,
-				apiBaseUrl:this._settings.apiUrl,
-				completionParams:{model:this._settings.model||"gpt-3.5-turbo"},
+				apiKey: this._authInfo.apiKey || "xx",
+				apiBaseUrl: this._settings.apiUrl,
+				completionParams: { model:this._settings.model || "gpt-3.5-turbo" },
 			});
 			// console.log( this._chatGPTAPI );
 		}
@@ -263,9 +272,9 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 
 			const agent = this._chatGPTAPI;
 
+			let currentMessageNumber = this._currentMessageNumber;
 			try {
 				// Send the search prompt to the ChatGPTAPI instance and store the response
-				let currentMessageNumber = this._currentMessageNumber;
 				const res = await agent.sendMessage(searchPrompt, {
 					onProgress: (partialResponse) => {
 						// If the message number has changed, don't show the partial response
@@ -294,7 +303,9 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 				}
 			} catch (e:any) {
 				console.error(e);
-				response += `\n\n---\n[ERROR] ${e}`;
+				if (this._currentMessageNumber === currentMessageNumber){
+					response += `\n\n---\n[ERROR] ${e}`;
+				}
 			}
 		}
 

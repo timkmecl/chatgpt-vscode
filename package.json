@@ -1,8 +1,8 @@
 {
   "name": "chatgpt",
   "displayName": "ChatGPT: write and improve code using AI",
-  "description": "Use ChatGPT right inside the IDE to enhance and automate your coding with AI-powered assistance (unofficial)",
-  "version": "1.0.1",
+  "description": "Use ChatGPT and GPT4 right inside the IDE to enhance and automate your coding with AI-powered assistance (unofficial)",
+  "version": "1.1.0",
   "publisher": "timkmecl",
   "icon": "resources/extensionIcon.png",
   "license": "MIT",
@@ -19,6 +19,7 @@
     "chatgpt",
     "openai",
     "gpt3",
+    "gpt4",
     "copilot",
     "ai",
     "explain",
@@ -161,7 +162,7 @@
           "order": 0
         },
         "chatgpt.apiUrl": {
-          "markdownDescription": "OpenAI API URL or other custom api url, Like https://openai.xxxxxx.net/v1",
+          "markdownDescription": "OpenAI API URL or other custom API URL. Defaults to [https://api.openai.com/v1](https://api.openai.com/v1)",
           "type": "string",
           "default": "https://api.openai.com/v1",
           "order": 1
