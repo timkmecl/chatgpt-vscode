@@ -256,6 +256,10 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 			searchPrompt = prompt;
 		}
 		this._fullPrompt = searchPrompt;
+		
+		// Increment the message number
+		this._currentMessageNumber++;
+		let currentMessageNumber = this._currentMessageNumber;
 
 		if (!this._chatGPTAPI) {
 			response = '[ERROR] "API key not set or wrong, please go to extension settings to set it (read README.md for more info)"';
@@ -267,12 +271,8 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 			this._view?.webview.postMessage({ type: 'setPrompt', value: this._prompt });
 			this._view?.webview.postMessage({ type: 'addResponse', value: '...' });
 
-			// Increment the message number
-			this._currentMessageNumber++;
-
 			const agent = this._chatGPTAPI;
 
-			let currentMessageNumber = this._currentMessageNumber;
 			try {
 				// Send the search prompt to the ChatGPTAPI instance and store the response
 				const res = await agent.sendMessage(searchPrompt, {
@@ -284,7 +284,8 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 						console.log("onProgress");
 						if (this._view && this._view.visible) {
 							response = partialResponse.text;
-							this._view.webview.postMessage({ type: 'addResponse', value: partialResponse.text });
+							this._response = response;
+							this._view.webview.postMessage({ type: 'addResponse', value: response });
 						}
 					},
 					timeoutMs: (this._settings.timeoutLength || 60) * 1000,
@@ -295,18 +296,27 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 					return;
 				}
 
+
+				console.log(response);
+
 				response = res.text;
 				if (this._settings.keepConversation){
 					this._conversation = {
 						parentMessageId: res.id
 					};
 				}
+
 			} catch (e:any) {
 				console.error(e);
 				if (this._currentMessageNumber === currentMessageNumber){
+					response = this._response;
 					response += `\n\n---\n[ERROR] ${e}`;
 				}
 			}
+		}
+
+		if (this._currentMessageNumber !== currentMessageNumber) {
+			return;
 		}
 
 		// Saves the response
