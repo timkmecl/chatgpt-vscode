@@ -31,6 +31,9 @@
       case "setPrompt": {
         document.getElementById("prompt-input").value = message.value;
         break;
+      } case "clearAll": {
+        response = '';
+        allResponses = '';
       }
     }
   });
