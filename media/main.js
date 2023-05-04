@@ -5,6 +5,8 @@
 (function () {
   const vscode = acquireVsCodeApi();
 
+  // Define a variable to store all the past responses
+  let allResponses = '';
   let response = '';
 
   // Handle messages sent from the extension to the webview
@@ -13,8 +15,14 @@
     switch (message.type) {
       case "addResponse": {
         response = message.value;
-        setResponse();
+        setResponse(allResponses + response);
         break;
+      }
+      case "setPrompt": {
+        // Keeping the log
+        response = response + "*<br/>*";
+        allResponses += response;
+        response = '';
       }
       case "clearResponse": {
         response = '';
@@ -28,70 +36,69 @@
   });
 
   function fixCodeBlocks(response) {
-  // Use a regular expression to find all occurrences of the substring in the string
-  const REGEX_CODEBLOCK = new RegExp('\`\`\`', 'g');
-  const matches = response.match(REGEX_CODEBLOCK);
+    // Use a regular expression to find all occurrences of the substring in the string
+    const REGEX_CODEBLOCK = new RegExp('\`\`\`', 'g');
+    const matches = response.match(REGEX_CODEBLOCK);
 
-  // Return the number of occurrences of the substring in the response, check if even
-  const count = matches ? matches.length : 0;
-  if (count % 2 === 0) {
-    return response;
-  } else {
-    // else append ``` to the end to make the last code block complete
-    return response.concat('\n\`\`\`');
+    // Return the number of occurrences of the substring in the response, check if even
+    const count = matches ? matches.length : 0;
+    if (count % 2 === 0) {
+      return response;
+    } else {
+      // else append ``` to the end to make the last code block complete
+      return response.concat('\n\`\`\`');
+    }
   }
 
-  }
+  function setResponse(responses) {
+    var converter = new showdown.Converter({
+      omitExtraWLInCodeBlocks: true,
+      simplifiedAutoLink: true,
+      excludeTrailingPunctuationFromURLs: true,
+      literalMidWordUnderscores: true,
+      simpleLineBreaks: true
+    });
+    // Pass in all the past responses to the fixCodeBlocks() function
+    responses = fixCodeBlocks(responses);
+    html = converter.makeHtml(responses);
 
-  function setResponse() {
-        var converter = new showdown.Converter({
-          omitExtraWLInCodeBlocks: true, 
-          simplifiedAutoLink: true,
-          excludeTrailingPunctuationFromURLs: true,
-          literalMidWordUnderscores: true,
-          simpleLineBreaks: true
+    // Set the entire HTML to the response element instead of appending
+    document.getElementById("response").innerHTML = html;
+
+    var preCodeBlocks = document.querySelectorAll("pre code");
+    for (var i = 0; i < preCodeBlocks.length; i++) {
+      preCodeBlocks[i].classList.add(
+        "p-2",
+        "my-2",
+        "block",
+        "overflow-x-scroll"
+      );
+    }
+
+    var codeBlocks = document.querySelectorAll('code');
+    for (var i = 0; i < codeBlocks.length; i++) {
+      if (codeBlocks[i].innerText.startsWith("Copy code")) {
+        codeBlocks[i].innerText = codeBlocks[i].innerText.replace("Copy code", "");
+      }
+
+      codeBlocks[i].classList.add("inline-flex", "max-w-full", "overflow-hidden", "rounded-sm", "cursor-pointer");
+
+      codeBlocks[i].addEventListener('click', function (e) {
+        e.preventDefault();
+        vscode.postMessage({
+          type: 'codeSelected',
+          value: this.innerText
         });
-        response = fixCodeBlocks(response);
-        html = converter.makeHtml(response);
-        document.getElementById("response").innerHTML = html;
+      });
 
-        var preCodeBlocks = document.querySelectorAll("pre code");
-        for (var i = 0; i < preCodeBlocks.length; i++) {
-            preCodeBlocks[i].classList.add(
-              "p-2",
-              "my-2",
-              "block",
-              "overflow-x-scroll"
-            );
-        }
-        
-        var codeBlocks = document.querySelectorAll('code');
-        for (var i = 0; i < codeBlocks.length; i++) {
-            // Check if innertext starts with "Copy code"
-            if (codeBlocks[i].innerText.startsWith("Copy code")) {
-                codeBlocks[i].innerText = codeBlocks[i].innerText.replace("Copy code", "");
-            }
+      const d = document.createElement('div');
+      d.innerHTML = codeBlocks[i].innerHTML;
+      codeBlocks[i].innerHTML = null;
+      codeBlocks[i].appendChild(d);
+      d.classList.add("code");
+    }
 
-            codeBlocks[i].classList.add("inline-flex", "max-w-full", "overflow-hidden", "rounded-sm", "cursor-pointer");
-
-            codeBlocks[i].addEventListener('click', function (e) {
-                e.preventDefault();
-                vscode.postMessage({
-                    type: 'codeSelected',
-                    value: this.innerText
-                });
-            });
-
-            const d = document.createElement('div');
-            d.innerHTML = codeBlocks[i].innerHTML;
-            codeBlocks[i].innerHTML = null;
-            codeBlocks[i].appendChild(d);
-            d.classList.add("code");
-        }
-
-        microlight.reset('code');
-
-        //document.getElementById("response").innerHTML = document.getElementById("response").innerHTML.replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+    microlight.reset('code');
   }
 
   // Listen for keyup events on the prompt input element
