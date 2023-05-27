@@ -372,6 +372,7 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 			</head>
 			<body>
 				<input class="h-10 w-full text-white bg-stone-700 p-4 text-sm" placeholder="Ask ChatGPT something" id="prompt-input" />
+				<p class="my-2 text-gray-600 text-sm">Press <span class="px-1 bg-grag-200">Command/Ctrl + Entry</span> to send request.</p>
 				
 				<div id="response" class="pt-4 text-sm">
 				</div>

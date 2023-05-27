@@ -98,7 +98,8 @@
   document.getElementById('prompt-input').addEventListener('keyup', function (e) {
     // If the key that was pressed was the Enter key
     if (
-      e.keyCode === 13 
+      (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) 
+      && e.keyCode === 13 
       && this.value
       && this.value.trim().length >= 0
     ) {
