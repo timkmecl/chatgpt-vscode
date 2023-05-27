@@ -109,4 +109,10 @@
       });
     }
   });
+
+  // start a new conversation
+  document.getElementById('new_btn').addEventListener('click', function (e) {
+    response = '';
+    setResponse();
+  });
 })();
