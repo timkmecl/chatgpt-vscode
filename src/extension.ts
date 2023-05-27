@@ -49,7 +49,11 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('chatgpt.ask', () => 
 			vscode.window.showInputBox({ prompt: 'What do you want to do?' })
-			.then((value) => provider.search(value))
+			.then((value) => {
+				if(value && value.trim().length >=0) {
+					provider.search(value)
+				}
+			})
 		),
 		vscode.commands.registerCommand('chatgpt.explain', () => commandHandler('promptPrefix.explain')),
 		vscode.commands.registerCommand('chatgpt.refactor', () => commandHandler('promptPrefix.refactor')),
