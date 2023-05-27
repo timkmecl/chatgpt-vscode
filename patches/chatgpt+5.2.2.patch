@@ -1,0 +1,52 @@
+diff --git a/node_modules/chatgpt/build/index.d.ts b/node_modules/chatgpt/build/index.d.ts
+index f0bbf31..24f6441 100644
+--- a/node_modules/chatgpt/build/index.d.ts
++++ b/node_modules/chatgpt/build/index.d.ts
+@@ -1,7 +1,7 @@
+-import Keyv from 'keyv';
++import * as Keyv from 'keyv';
+ 
+ type Role = 'user' | 'assistant' | 'system';
+-type FetchFn = typeof fetch;
++type FetchFn = any;
+ type ChatGPTAPIOptions = {
+     apiKey: string;
+     /** @defaultValue `'https://api.openai.com'` **/
+diff --git a/node_modules/chatgpt/build/index.js b/node_modules/chatgpt/build/index.js
+index b157058..9494c1e 100644
+--- a/node_modules/chatgpt/build/index.js
++++ b/node_modules/chatgpt/build/index.js
+@@ -1,3 +1,4 @@
++import fetch from 'node-fetch'
+ // src/chatgpt-api.ts
+ import Keyv from "keyv";
+ import pTimeout from "p-timeout";
+@@ -5,10 +6,16 @@ import QuickLRU from "quick-lru";
+ import { v4 as uuidv4 } from "uuid";
+ 
+ // src/tokenizer.ts
+-import { get_encoding } from "@dqbd/tiktoken";
+-var tokenizer = get_encoding("cl100k_base");
++// import { get_encoding } from "@dqbd/tiktoken";
++// var tokenizer = get_encoding("cl100k_base");
++// function encode(input) {
++//   return tokenizer.encode(input);
++// }
++import GPT3TokenizerImport from "gpt3-tokenizer";
++var GPT3Tokenizer = typeof GPT3TokenizerImport === "function" ? GPT3TokenizerImport : GPT3TokenizerImport.default;
++var tokenizer = new GPT3Tokenizer({ type: "gpt3" });
+ function encode(input) {
+-  return tokenizer.encode(input);
++  return tokenizer.encode(input).bpe;
+ }
+ 
+ // src/types.ts
+@@ -19,7 +26,7 @@ var openai;
+ })(openai || (openai = {}));
+ 
+ // src/fetch.ts
+-var fetch = globalThis.fetch;
++// var fetch = globalThis.fetch;
+ 
+ // src/fetch-sse.ts
+ import { createParser } from "eventsource-parser";
