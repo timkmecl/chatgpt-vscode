@@ -3,7 +3,17 @@ import { ChatGPTAPI } from 'chatgpt';
 
 
 type AuthInfo = {apiKey?: string};
-type Settings = {selectedInsideCodeblock?: boolean, codeblockWithLanguageId?: false, pasteOnClick?: boolean, keepConversation?: boolean, timeoutLength?: number, model?: string, apiUrl?: string};
+type Settings = {
+	selectedInsideCodeblock?: boolean, 
+	codeblockWithLanguageId?: false, 
+	pasteOnClick?: boolean, 
+	keepConversation?: boolean, 
+	timeoutLength?: number, 
+	model?: string, 
+	apiUrl?: string
+	temperature?: number
+	maxTokens?: number
+};
 
 
 const BASE_URL = 'https://api.openai.com/v1';
@@ -28,7 +38,9 @@ export function activate(context: vscode.ExtensionContext) {
 		keepConversation: config.get('keepConversation') || false,
 		timeoutLength: config.get('timeoutLength') || 60,
 		apiUrl: config.get('apiUrl') || BASE_URL,
-		model: config.get('model') || 'gpt-3.5-turbo'
+		model: config.get('model') || 'gpt-3.5-turbo',
+		temperature: config.get('temperature') || 0.9,
+		maxTokens: config.get('maxTokens') || 2048
 	});
 
 	// Register the provider with the extension's context
@@ -91,6 +103,12 @@ export function activate(context: vscode.ExtensionContext) {
 		} else if (event.affectsConfiguration('chatgpt.timeoutLength')) {
 			const config = vscode.workspace.getConfiguration('chatgpt');
 			provider.setSettings({ timeoutLength: config.get('timeoutLength') || 60 });
+		} else if (event.affectsConfiguration('chatgpt.temperature')) {
+			const config = vscode.workspace.getConfiguration('chatgpt');
+			provider.setSettings({ temperature: config.get('temperature') || 0.9 });
+		} else if (event.affectsConfiguration('chatgpt.maxTokens')) {
+			const config = vscode.workspace.getConfiguration('chatgpt');
+			provider.setSettings({ maxTokens: config.get('maxTokens') || 2048 });
 		}
 	});
 }
@@ -118,7 +136,9 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 		keepConversation: true,
 		timeoutLength: 60,
 		apiUrl: BASE_URL,
-		model: 'gpt-3.5-turbo'
+		model: 'gpt-3.5-turbo',
+		temperature: 0.9,
+		maxTokens: 2048,
 	};
 	private _authInfo?: AuthInfo;
 
@@ -158,7 +178,11 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 			this._chatGPTAPI = new ChatGPTAPI({
 				apiKey: this._authInfo.apiKey || "xx",
 				apiBaseUrl: this._settings.apiUrl,
-				completionParams: { model:this._settings.model || "gpt-3.5-turbo" },
+				completionParams: { 
+					model: this._settings.model || "gpt-3.5-turbo",
+					temperature: this._settings.temperature || 0.9,
+					max_tokens: this._settings.maxTokens || 2048,
+				},
 			});
 			// console.log( this._chatGPTAPI );
 		}
