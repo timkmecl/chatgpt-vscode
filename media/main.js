@@ -95,11 +95,12 @@
   }
 
   // Listen for keyup events on the prompt input element
-  document.getElementById('prompt-input').addEventListener('keyup', function (e) {
+  document.getElementById('prompt-input').addEventListener('keydown', function (e) {
     // If the key that was pressed was the Enter key
+    const ctrlKeyDown = event.ctrlKey || event.metaKey;
     if (
-      (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) 
-      && e.keyCode === 13 
+      ctrlKeyDown
+      && e.key === 'Enter'
       && this.value
       && this.value.trim().length >= 0
     ) {
