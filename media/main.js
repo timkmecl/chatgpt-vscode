@@ -113,8 +113,8 @@
 
   // start a new conversation
   document.getElementById('new_btn').addEventListener('click', function (e) {
-    response = '';
-    document.getElementById('prompt-input').value = '';
-    setResponse();
+    vscode.postMessage({
+      type: 'clear',
+    });
   });
 })();

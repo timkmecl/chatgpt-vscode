@@ -225,6 +225,12 @@ class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 				case 'prompt':
 					{
 						this.search(data.value);
+						break;
+					}
+				case 'clear':
+					{
+						this.resetConversation();
+						break;
 					}
 			}
 		});
