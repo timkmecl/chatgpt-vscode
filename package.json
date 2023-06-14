@@ -259,13 +259,13 @@
   },
   "scripts": {
     "postinstall": "patch-package",
-    "vscode:prepublish": "yarn run package",
+    "vscode:prepublish": "npm run package",
     "compile": "webpack",
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
     "update-package-lock": "npm install --package-lock-only"
@@ -288,7 +288,7 @@
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
-    "chatgpt": "^5.2.2",
+    "chatgpt": "5.2.2",
     "gpt3-tokenizer": "^1.1.5",
     "node-fetch": "^3.3.0"
   }
