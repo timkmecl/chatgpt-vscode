@@ -2,7 +2,7 @@
   "name": "chatgpt",
   "displayName": "ChatGPT: write and improve code using AI",
   "description": "Use ChatGPT and GPT4 right inside the IDE to enhance and automate your coding with AI-powered assistance (unofficial)",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "publisher": "timkmecl",
   "icon": "resources/extensionIcon.png",
   "license": "MIT",
@@ -172,6 +172,7 @@
           "enum": [
             "gpt-3.5-turbo",
             "gpt-3.5-turbo-16k",
+            "gpt-3.5-turbo-16k-0613",
             "gpt-3.5-turbo-0613",
             "gpt-4",
             "gpt-4-0613",
@@ -189,7 +190,7 @@
         },
         "chatgpt.maxTokens": {
           "type": "number",
-          "default": 2048,
+          "default": 1000,
           "description": "The maximum number of tokens allowed for the generated answer.",
           "order": 1
         },
