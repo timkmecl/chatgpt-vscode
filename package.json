@@ -2,7 +2,7 @@
   "name": "chatgpt",
   "displayName": "ChatGPT: write and improve code using AI",
   "description": "Use ChatGPT and GPT4 right inside the IDE to enhance and automate your coding with AI-powered assistance (unofficial)",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "publisher": "timkmecl",
   "icon": "resources/extensionIcon.png",
   "license": "MIT",
@@ -171,7 +171,9 @@
           "type": "string",
           "enum": [
             "gpt-3.5-turbo",
-            "gpt-4"
+            "gpt-3.5-turbo-0613",
+            "gpt-4",
+            "gpt-4-0613"
           ],
           "default": "gpt-3.5-turbo",
           "description": "Which GPT model to use",
