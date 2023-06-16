@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { ChatGPTAPI } from 'chatgpt';
 import { AuthInfo, ConversationInfo, Settings } from './type';
+import { clearCode } from './utils';
 
 export const BASE_URL = 'https://api.openai.com/v1';
 
@@ -191,14 +192,15 @@ export class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 
 		// Get the selected text of the active editor
 		const selection = vscode.window.activeTextEditor?.selection;
-		const selectedText = vscode.window.activeTextEditor?.document.getText(selection);
+		let selectedText = vscode.window.activeTextEditor?.document.getText(selection);
 
 		// Get the language id of the selected text of the active editor
 		// If a user does not want to append this information to their prompt, leave it as an empty string
 		const languageId = (this._settings.codeblockWithLanguageId ? vscode.window.activeTextEditor?.document?.languageId : undefined) || "";
-
+		
 
 		if (selection && selectedText) {
+			selectedText = await clearCode(selectedText, vscode.window.activeTextEditor?.document?.languageId);
 			// If there is a selection, add the prompt and the selected text to the search prompt
 			if (this._settings.selectedInsideCodeblock) {
 				this._prompt = `${prompt}\n\`\`\`${languageId}\n${selectedText}\n\`\`\``;
