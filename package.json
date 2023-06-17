@@ -2,7 +2,7 @@
   "name": "chatgpt",
   "displayName": "ChatGPT: write and improve code using AI",
   "description": "Use ChatGPT and GPT4 right inside the IDE to enhance and automate your coding with AI-powered assistance (unofficial)",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "publisher": "timkmecl",
   "icon": "resources/extensionIcon.png",
   "license": "MIT",
@@ -292,6 +292,7 @@
     "chatgpt": "5.2.2",
     "gpt3-tokenizer": "^1.1.5",
     "node-fetch": "^3.3.0",
+    "playwright": "^1.35.1",
     "terser": "^5.18.0"
   }
 }

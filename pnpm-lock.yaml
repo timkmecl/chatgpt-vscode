@@ -14,6 +14,9 @@ dependencies:
   node-fetch:
     specifier: ^3.3.0
     version: 3.3.0
+  playwright:
+    specifier: ^1.35.1
+    version: 1.35.1
   terser:
     specifier: ^5.18.0
     version: 5.18.0
@@ -2004,6 +2007,21 @@ packages:
     dependencies:
       find-up: 4.1.0
     dev: true
+
+  /playwright-core@1.35.1:
+    resolution: {integrity: sha512-pNXb6CQ7OqmGDRspEjlxE49w+4YtR6a3X6mT1hZXeJHWmsEz7SunmvZeiG/+y1yyMZdHnnn73WKYdtV1er0Xyg==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dev: false
+
+  /playwright@1.35.1:
+    resolution: {integrity: sha512-NbwBeGJLu5m7VGM0+xtlmLAH9VUfWwYOhUi/lSEDyGg46r1CA9RWlvoc5yywxR9AzQb0mOCm7bWtOXV7/w43ZA==}
+    engines: {node: '>=16'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      playwright-core: 1.35.1
+    dev: false
 
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}

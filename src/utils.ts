@@ -34,11 +34,11 @@ export async function clearCode(code: string, lang?: string) {
   // clear blank lines
   newCode = newCode.replace(/[\r\n]+/g, '\n');
 
-  console.log({
-    code,
-    lang,
-    newCode,
-  });
+  // console.log({
+  //   code,
+  //   lang,
+  //   newCode,
+  // });
 
   return newCode.trim();
 }

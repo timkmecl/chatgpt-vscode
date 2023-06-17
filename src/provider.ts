@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { ChatGPTAPI } from 'chatgpt';
 import { AuthInfo, ConversationInfo, Settings } from './type';
 import { clearCode } from './utils';
+import { google } from './plugins';
 
 export const BASE_URL = 'https://api.openai.com/v1';
 
@@ -166,11 +167,17 @@ export class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 	 * send message to chatgpt api
 	 */
 	public async search(prompt?: string) {
+		
 		this._prompt = prompt;
 		if (!prompt) {
 			prompt = '';
 			throw new Error('Prompt is empty');
 		};
+
+		const needGoogle = prompt.trim().startsWith('/s ');
+		if(needGoogle) {
+			prompt = prompt.replace('/s ', '').trim();
+		}
 
 		// Check if the ChatGPTAPI instance is defined
 		if (!this._chatGPTAPI) {
@@ -211,7 +218,15 @@ export class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 			// Otherwise, just use the prompt if user typed it
 			this._prompt = prompt;
 		}
-		
+
+		// search
+		if(needGoogle) {
+			this._view?.webview.postMessage({ type: 'addResponse', value: 'Searching...' });
+			const searchResult = await google(prompt);
+			if(searchResult) {
+				this._prompt = `${this._prompt}\n\n\nPlease use the [Google Search Reference] info to reply:\n${await clearCode(searchResult)}`;
+			}
+		}
 		// Increment the message number
 		this._currentMessageNumber++;
 		const currentMessageNumber = this._currentMessageNumber;
