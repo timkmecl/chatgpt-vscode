@@ -11,3 +11,8 @@ vsc-extension-quickstart.md
 **/.eslintrc.json
 **/*.map
 **/*.ts
+
+examples
+pnpm-lock.yaml
+patches
+prepare-package.js

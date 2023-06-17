@@ -2,7 +2,7 @@
   "name": "chatgpt",
   "displayName": "ChatGPT: write and improve code using AI",
   "description": "Use ChatGPT and GPT4 right inside the IDE to enhance and automate your coding with AI-powered assistance (unofficial)",
-  "version": "1.1.9",
+  "version": "1.1.10",
   "publisher": "timkmecl",
   "icon": "resources/extensionIcon.png",
   "license": "MIT",
@@ -253,6 +253,12 @@
           "default": true,
           "description": "Append language id of the selected code to the codeblock (```language...code...```)",
           "order": 11
+        },
+        "chatgpt.chromiumExecutablePath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the Chromium executable used, `chrome` and `edge` are fine. If left empty, it will read `CHROMIUM_EXECUTABLE_PATH` from environment variables.",
+          "order": 20
         }
       }
     }
@@ -262,7 +268,7 @@
     "vscode:prepublish": "npm run package",
     "compile": "webpack",
     "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
+    "package": "webpack --mode production --devtool hidden-source-map && node prepare-package.js",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
@@ -292,7 +298,7 @@
     "chatgpt": "5.2.2",
     "gpt3-tokenizer": "^1.1.5",
     "node-fetch": "^3.3.0",
-    "playwright": "^1.35.1",
+    "puppeteer-core": "^20.7.2",
     "terser": "^5.18.0"
   }
 }

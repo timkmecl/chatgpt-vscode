@@ -1,17 +1,33 @@
 import * as vscode from 'vscode';
-import { chromium } from 'playwright';
+import puppeteer, { type PuppeteerLaunchOptions } from 'puppeteer-core';
 
 export async function google(query: string) {
 
   try {
+    let launchOptions: PuppeteerLaunchOptions = {};
+
     const config = vscode.workspace.getConfiguration();
     const proxy = config.get<string>('http.proxy');
+    
+    if(proxy) {
+      launchOptions = {
+        ...launchOptions,
+        args: [`--proxy-server=${proxy}`]
+      };
+    }
 
-    const browser = await chromium.launch(proxy ? {
-      proxy: {
-        server: proxy,
-      }
-    } : undefined);
+    console.log(process.env);
+    const executablePath = process.env.CHROMIUM_EXECUTABLE_PATH || config.get('chatgpt.chromiumExecutablePath');
+
+    if(executablePath) {
+      launchOptions = {
+        ...launchOptions,
+        executablePath
+      };
+    }
+
+
+    const browser = await puppeteer.launch(launchOptions);
     const page = await browser.newPage();
     await page.goto(`https://www.google.com/search?q=${encodeURI(query)}&lr=lang_en&hl=en`);
 
@@ -19,7 +35,9 @@ export async function google(query: string) {
     
 
     if(cardSectionNode) {
-      const cardSectionText = await cardSectionNode.innerText();
+      const cardSectionText = await cardSectionNode.evaluate((node) => {
+        return (node as HTMLElement).innerText;
+      });
       return cardSectionText;
     }
 
