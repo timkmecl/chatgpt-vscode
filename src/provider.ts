@@ -6,6 +6,8 @@ import { google } from './plugins';
 
 export const BASE_URL = 'https://api.openai.com/v1';
 
+const PROPMT_PREFIX = 'You are a strong assistant and specialise in programming related areas.\nYou can answer my goal in conjunction with the code provided or a google search results.\n';
+
 export class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 	public static readonly viewType = 'chatgpt.chatView';
 	/**
@@ -210,13 +212,13 @@ export class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 			selectedText = await clearCode(selectedText, vscode.window.activeTextEditor?.document?.languageId);
 			// If there is a selection, add the prompt and the selected text to the search prompt
 			if (this._settings.selectedInsideCodeblock) {
-				this._prompt = `${prompt}\n\`\`\`${languageId}\n${selectedText}\n\`\`\``;
+				this._prompt = `${PROPMT_PREFIX}[GOAL]:${prompt}\n[CODE]:\n\`\`\`${languageId}\n${selectedText}\n\`\`\``;
 			} else {
-				this._prompt = `${prompt}\n${selectedText}\n`;
+				this._prompt = `${PROPMT_PREFIX}[GOAL]:${prompt}\n[CODE]:\n${selectedText}\n`;
 			}
 		} else {
 			// Otherwise, just use the prompt if user typed it
-			this._prompt = prompt;
+			this._prompt = `${PROPMT_PREFIX}[GOAL]:${prompt}`;
 		}
 
 		// search
@@ -224,7 +226,7 @@ export class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 			this._view?.webview.postMessage({ type: 'addResponse', value: 'Searching...' });
 			const searchResult = await google(prompt);
 			if(searchResult) {
-				this._prompt = `${this._prompt}\n\n\nPlease use the [Google Search Reference] info to reply:\n${await clearCode(searchResult)}`;
+				this._prompt = `${this._prompt}\n\n\n[The google search results]:\n${await clearCode(searchResult)}`;
 			}
 		}
 		// Increment the message number

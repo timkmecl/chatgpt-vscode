@@ -1,10 +1,11 @@
 import * as vscode from 'vscode';
-import puppeteer, { type PuppeteerLaunchOptions } from 'puppeteer-core';
+import puppeteer from 'puppeteer-core';
+import type {Browser, PuppeteerLaunchOptions} from 'puppeteer-core';
 
-export async function google(query: string) {
+let browser: Browser | null = null;
 
-  try {
-    let launchOptions: PuppeteerLaunchOptions = {};
+export async function initBrowser() {
+  let launchOptions: PuppeteerLaunchOptions = {};
 
     const config = vscode.workspace.getConfiguration();
     const proxy = config.get<string>('http.proxy');
@@ -26,8 +27,25 @@ export async function google(query: string) {
       };
     }
 
+    browser = await puppeteer.launch(launchOptions);
+}
 
-    const browser = await puppeteer.launch(launchOptions);
+vscode.workspace.onDidChangeConfiguration(async (event: vscode.ConfigurationChangeEvent) => {
+  if (event.affectsConfiguration('chatgpt.chromiumExecutablePath')) {
+    browser = null;
+    await initBrowser();
+  }
+});
+
+export async function google(query: string) {
+  try {
+    if(!browser) {
+      await initBrowser();
+      if(!browser) {
+        return '';
+      }
+    }
+
     const page = await browser.newPage();
     await page.goto(`https://www.google.com/search?q=${encodeURI(query)}&lr=lang_en&hl=en`);
 
@@ -44,7 +62,7 @@ export async function google(query: string) {
 
     const data = await page.evaluate(() => {
       const rsoNode = document.querySelector('#rso');
-      const resNodes = Array.from(rsoNode?.children || []).slice(0, 5);
+      const resNodes = Array.from(rsoNode?.children || []).slice(0, 3);
       
       return resNodes.map((node) => {
         return (node as HTMLElement).innerText;
