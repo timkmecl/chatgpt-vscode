@@ -95,13 +95,26 @@
   }
 
   // Listen for keyup events on the prompt input element
-  document.getElementById('prompt-input').addEventListener('keyup', function (e) {
+  document.getElementById('prompt-input').addEventListener('keydown', function (e) {
     // If the key that was pressed was the Enter key
-    if (e.keyCode === 13) {
+    const ctrlKeyDown = event.ctrlKey || event.metaKey;
+    if (
+      ctrlKeyDown
+      && e.key === 'Enter'
+      && this.value
+      && this.value.trim().length >= 0
+    ) {
       vscode.postMessage({
         type: 'prompt',
         value: this.value
       });
     }
+  });
+
+  // start a new conversation
+  document.getElementById('new_btn').addEventListener('click', function (e) {
+    vscode.postMessage({
+      type: 'clear',
+    });
   });
 })();

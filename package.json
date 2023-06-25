@@ -2,7 +2,7 @@
   "name": "chatgpt",
   "displayName": "ChatGPT: write and improve code using AI",
   "description": "Use ChatGPT and GPT4 right inside the IDE to enhance and automate your coding with AI-powered assistance (unofficial)",
-  "version": "1.1.2",
+  "version": "1.1.11",
   "publisher": "timkmecl",
   "icon": "resources/extensionIcon.png",
   "license": "MIT",
@@ -171,10 +171,27 @@
           "type": "string",
           "enum": [
             "gpt-3.5-turbo",
-            "gpt-4"
+            "gpt-3.5-turbo-16k",
+            "gpt-3.5-turbo-16k-0613",
+            "gpt-3.5-turbo-0613",
+            "gpt-4",
+            "gpt-4-0613",
+            "gpt-4-32k-0613"
           ],
           "default": "gpt-3.5-turbo",
           "description": "Which GPT model to use",
+          "order": 1
+        },
+        "chatgpt.temperature": {
+          "type": "number",
+          "default": 0.9,
+          "description": "What sampling temperature to use, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.",
+          "order": 1
+        },
+        "chatgpt.maxTokens": {
+          "type": "number",
+          "default": 1000,
+          "description": "The maximum number of tokens allowed for the generated answer.",
           "order": 1
         },
         "chatgpt.pasteOnClick": {
@@ -221,7 +238,7 @@
         },
         "chatgpt.timeoutLength": {
           "type": "number",
-          "default": "120",
+          "default": 120,
           "description": "How long should the request wait for a response before timing out (in seconds)",
           "order": 9
         },
@@ -236,21 +253,29 @@
           "default": true,
           "description": "Append language id of the selected code to the codeblock (```language...code...```)",
           "order": 11
+        },
+        "chatgpt.chromiumExecutablePath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the Chromium executable used, `chrome` and `edge` are fine. If left empty, it will read `CHROMIUM_EXECUTABLE_PATH` from environment variables.",
+          "order": 20
         }
       }
     }
   },
   "scripts": {
-    "vscode:prepublish": "yarn run package",
+    "postinstall": "patch-package",
+    "vscode:prepublish": "npm run package",
     "compile": "webpack",
     "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
+    "package": "webpack --mode production --devtool hidden-source-map && node prepare-package.js",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
-    "update-package-lock": "npm install --package-lock-only"
+    "update-package-lock": "npm install --package-lock-only",
+    "vsce:package": "vsce package --no-dependencies"
   },
   "devDependencies": {
     "@types/glob": "^8.0.0",
@@ -263,14 +288,17 @@
     "eslint": "^8.28.0",
     "glob": "^8.0.3",
     "mocha": "^10.1.0",
+    "patch-package": "^7.0.0",
     "ts-loader": "^9.4.1",
     "typescript": "^4.9.3",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
-    "chatgpt": "^5.2.2",
+    "chatgpt": "5.2.2",
     "gpt3-tokenizer": "^1.1.5",
-    "node-fetch": "^3.3.0"
+    "node-fetch": "^3.3.0",
+    "puppeteer-core": "^20.7.2",
+    "terser": "^5.18.0"
   }
 }
