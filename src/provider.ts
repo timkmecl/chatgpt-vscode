@@ -6,7 +6,7 @@ import { google } from './plugins';
 
 export const BASE_URL = 'https://api.openai.com/v1';
 
-const PROPMT_PREFIX = 'You are a strong assistant and specialise in programming related areas.\nYou can answer my goal in conjunction with the code provided or a google search results.\n';
+const PROPMT_PREFIX = 'You are my programming partner and help me solve my problems. I am looking for someone who can work with me as a team and provide me with the best possible solutions. I may not always provide additional information, but if I share any code or Google search results, please incorporate that information to give me more accurate answers. Please ensure that you communicate effectively and provide clear explanations for your solutions. Also, please be patient and understanding with me as I may need extra time to understand complex concepts.\n\n';
 
 export class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 	public static readonly viewType = 'chatgpt.chatView';
@@ -208,17 +208,19 @@ export class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 		const languageId = (this._settings.codeblockWithLanguageId ? vscode.window.activeTextEditor?.document?.languageId : undefined) || "";
 		
 
-		if (selection && selectedText) {
+		if (selection && selectedText
+			// avoid to add selectedText twice
+			&& !this._conversation?.parentMessageId) {
 			selectedText = await clearCode(selectedText, vscode.window.activeTextEditor?.document?.languageId);
 			// If there is a selection, add the prompt and the selected text to the search prompt
 			if (this._settings.selectedInsideCodeblock) {
-				this._prompt = `${PROPMT_PREFIX}[GOAL]:${prompt}\n[CODE]:\n\`\`\`${languageId}\n${selectedText}\n\`\`\``;
+				this._prompt = `[GOAL]:${prompt}\n[CODE]:\n\`\`\`${languageId}\n${selectedText}\n\`\`\``;
 			} else {
-				this._prompt = `${PROPMT_PREFIX}[GOAL]:${prompt}\n[CODE]:\n${selectedText}\n`;
+				this._prompt = `[GOAL]:${prompt}\n[CODE]:\n${selectedText}\n`;
 			}
 		} else {
 			// Otherwise, just use the prompt if user typed it
-			this._prompt = `${PROPMT_PREFIX}[GOAL]:${prompt}`;
+			this._prompt = `[GOAL]:${prompt}`;
 		}
 
 		// search
@@ -247,6 +249,7 @@ export class ChatGPTViewProvider implements vscode.WebviewViewProvider {
 			const agent = this._chatGPTAPI;
 
 			try {
+				this._prompt = `${this._conversation?.parentMessageId?'':PROPMT_PREFIX}${this._prompt}`;
 				console.log({
 					prompt: this._prompt,
 				});
